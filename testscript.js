@@ -1,5 +1,3 @@
-// alert("this script lives in a file");
-
 var player;
 
 // simple example to get started;
@@ -14,10 +12,8 @@ MIDI.loadPlugin({
 		MIDI.setVolume(0, 127);
 		// MIDI.noteOn(0, note, velocity, delay);
 		// MIDI.noteOff(0, note, delay + 0.75);
-
-		var song = 'data:audio/mid;base64,TVRoZAAAAAYAAQABAMBNVHJrAAAARwD/WAQEAhgIAP9RAwehIAD/AwlOZXcgVHJhY2sAwHMAkDxkMoA8MIEOkDxkMoA8MIEOkDxkMoA8MIEOkDxkgT+APDAB/y8A';
 		player = MIDI.Player;
-		player.loadFile(song, player.start);
+		// player.loadFile(song, player.start);
 	}
 });
 
@@ -31,50 +27,23 @@ function handleFileSelect(evt) {
                   f.size, ' bytes, last modified: ',
                   f.lastModifiedDate ? f.lastModifiedDate.toLocaleDateString() : 'n/a',
                   '</li>');
+
       var reader = new FileReader();
 
       // Closure to capture the file information.
       reader.onload = (function(theFile) {
         return function(e) {
-          // Render thumbnail.
-          var span = document.createElement('span');
-          var m = MidiFile(e.target.result);
-          debugger;
-          span.innerHTML = m["data"];
-          // span.innerHTML = ['contents: ', e.target.result,
-          //                   '" title: "', escape(theFile.name), '"/>'].join('');
-          document.getElementById('list').insertBefore(span, null);
+			player.loadFile(e.target.result, player.start);
 
+          // To use jasmid, load the file as a binary string (reader.readAsBinaryString(f))
+          // var m = MidiFile(e.target.result);
         };
       })(f);
 
-      reader.readAsBinaryString(f);
-      // reader.readAsText(f);
+      // reader.readAsBinaryString(f); // use for jasmid
+      reader.readAsDataURL(f);
     }
     document.getElementById('list').innerHTML = '<ul>' + output.join('') + '</ul>';
   }
 
   document.getElementById('files').addEventListener('change', handleFileSelect, false);
-
-
-// function readSingleFile(e) {
-//   var file = e.target.files[0];
-//   if (!file) {
-//     return;
-//   }
-//   var reader = new FileReader();
-//   reader.onload = function(e) {
-//     var contents = e.target.result;
-//     displayContents(contents);
-//   };
-//   reader.readAsText(file);
-// }
-
-// function displayContents(contents) {
-//   var element = document.getElementById('file-content');
-//   element.innerHTML = contents;
-//   // MidiFile(contents);
-// }
-
-// document.getElementById('file-input')
-//   .addEventListener('change', readSingleFile, false);
