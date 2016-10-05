@@ -51,8 +51,13 @@ function bumpTempo(evt) {
 		// player.BPM = 500;
 		// player.replayer.bpmOverride = true;
 		// player.replayer.beatsPerMinute = 500;
-		player.timeWarp = 2;
+		// player.timeWarp = 2;
+		player.setTempoMultiplier(.5);
+		// MIDI.setTempoMultiplier(.5);
+		// player.pause();
+		// player.resume();
 	}
+	// player.debug();
 }
 
 function handleFileSelect(evt) {
@@ -71,6 +76,7 @@ function handleFileSelect(evt) {
       // Closure to capture the file information.
       reader.onload = (function(theFile) {
         return function(e) {
+        	player.tempoMultiplier = 2.0;
 			player.loadFile(e.target.result, player.start);
 
           // To use jasmid, load the file as a binary string (reader.readAsBinaryString(f))
