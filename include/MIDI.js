@@ -483,14 +483,27 @@ midi.BPM = 120;
 
 midi.setTempoMultiplier = function(t) {
 	MIDI.setTempoMultiplier(t);
-	console.log("setting tempo multiplier to", t);
+
 	for (var key in eventQueue) {
 		event = eventQueue[key];
-		console.log("event subtype: ", event.event.subtype);
+
 		if (event.event.subtype == 'noteOn') {
-			console.log("rescheduling event: ", event);
+			window.clearInterval(event.interval);
+			if (event.source) {
+				window.clearTimeout(event.source);
+				event.source.disconnect(0);
+			}	
 			event["source"] = MIDI.noteOn(event.channelId, event.event.noteNumber, event.event.velocity, event.delay);
 		}
+		// noteoff events probably need to be killed, but not for currently playing notes
+		//  else if (event.event.subtype == 'noteOff') {
+		// 	window.clearInterval(event.interval);
+		// 	if (event.source) {
+		// 		window.clearTimeout(event.source);
+		// 		event.source.disconnect(0);
+		// 	}	
+		// 	event["source"] = MIDI.noteOff(event.channelId, event.event.noteNumber, event.delay);
+		// }
 	}
 };
 
