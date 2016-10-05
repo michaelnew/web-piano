@@ -1,0 +1,1 @@
+alert("this script lives in a file")
