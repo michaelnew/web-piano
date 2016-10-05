@@ -14,8 +14,53 @@ MIDI.loadPlugin({
 		// MIDI.noteOff(0, note, delay + 0.75);
 		player = MIDI.Player;
 		// player.loadFile(song, player.start);
+
+		MIDIPlayerPercentage(player);
 	}
 });
+
+var MIDIPlayerPercentage = function(player) {
+		// update the timestamp
+		var time1 = document.getElementById("time");
+		// var time2 = document.getElementById("time2");
+		// var capsule = document.getElementById("capsule");
+		// var timeCursor = document.getElementById("cursor");
+		//
+		// eventjs.add(capsule, "drag", function(event, self) {
+		// 	eventjs.cancel(event);
+		// 	player.currentTime = (self.x) / 420 * player.endTime;
+		// 	if (player.currentTime < 0) player.currentTime = 0;
+		// 	if (player.currentTime > player.endTime) player.currentTime = player.endTime;
+		// 	if (self.state === "down") {
+		// 		player.pause(true);
+		// 	} else if (self.state === "up") {
+		// 		player.resume();
+		// 	}
+		// });
+		//
+		function timeFormatting(n) {
+			var minutes = n / 60 >> 0;
+			var seconds = String(n - (minutes * 60) >> 0);
+			if (seconds.length == 1) seconds = "0" + seconds;
+			return minutes + ":" + seconds;
+		};
+
+		player.setAnimation(function(data, element) {
+			var percent = data.now / data.end;
+			var now = data.now >> 0; // where we are now
+			var end = data.end >> 0; // end of song
+
+			// makes the player repeat
+			if (now === end) { // go to next song
+				player.currentTime = 0;
+				player.resume();
+			}
+			// display the information to the user
+			// timeCursor.style.width = (percent * 100) + "%";
+			time1.innerHTML = timeFormatting(now);
+			// time2.innerHTML = "-" + timeFormatting(end - now);
+		});
+	};
 
 function handleFileSelect(evt) {
     var files = evt.target.files; // FileList object
