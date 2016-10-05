@@ -22,22 +22,7 @@ MIDI.loadPlugin({
 var MIDIPlayerPercentage = function(player) {
 		// update the timestamp
 		var time1 = document.getElementById("time");
-		// var time2 = document.getElementById("time2");
-		// var capsule = document.getElementById("capsule");
-		// var timeCursor = document.getElementById("cursor");
-		//
-		// eventjs.add(capsule, "drag", function(event, self) {
-		// 	eventjs.cancel(event);
-		// 	player.currentTime = (self.x) / 420 * player.endTime;
-		// 	if (player.currentTime < 0) player.currentTime = 0;
-		// 	if (player.currentTime > player.endTime) player.currentTime = player.endTime;
-		// 	if (self.state === "down") {
-		// 		player.pause(true);
-		// 	} else if (self.state === "up") {
-		// 		player.resume();
-		// 	}
-		// });
-		//
+
 		function timeFormatting(n) {
 			var minutes = n / 60 >> 0;
 			var seconds = String(n - (minutes * 60) >> 0);
@@ -55,10 +40,7 @@ var MIDIPlayerPercentage = function(player) {
 				player.currentTime = 0;
 				player.resume();
 			}
-			// display the information to the user
-			// timeCursor.style.width = (percent * 100) + "%";
 			time1.innerHTML = timeFormatting(now);
-			// time2.innerHTML = "-" + timeFormatting(end - now);
 		});
 	};
 
