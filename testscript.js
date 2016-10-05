@@ -13,6 +13,7 @@ MIDI.loadPlugin({
 		// MIDI.noteOn(0, note, velocity, delay);
 		// MIDI.noteOff(0, note, delay + 0.75);
 		player = MIDI.Player;
+		// player.BPM = 300;
 		// player.loadFile(song, player.start);
 
 		MIDIPlayerPercentage(player);
@@ -35,14 +36,24 @@ var MIDIPlayerPercentage = function(player) {
 			var now = data.now >> 0; // where we are now
 			var end = data.end >> 0; // end of song
 
-			// makes the player repeat
-			if (now === end) { // go to next song
-				player.currentTime = 0;
-				player.resume();
-			}
+			// // makes the player repeat
+			// if (now === end) { // go to next song
+			// 	player.currentTime = 0;
+			// 	player.resume();
+			// }
 			time1.innerHTML = timeFormatting(now);
 		});
 	};
+
+function bumpTempo(evt) {
+	if (player != null) {
+		console.log("increasing tempo");
+		// player.BPM = 500;
+		// player.replayer.bpmOverride = true;
+		// player.replayer.beatsPerMinute = 500;
+		player.timeWarp = 2;
+	}
+}
 
 function handleFileSelect(evt) {
     var files = evt.target.files; // FileList object
@@ -71,6 +82,11 @@ function handleFileSelect(evt) {
       reader.readAsDataURL(f);
     }
     document.getElementById('list').innerHTML = '<ul>' + output.join('') + '</ul>';
-  }
+	console.log("fired handlefileSelect");
+}
 
-  document.getElementById('files').addEventListener('change', handleFileSelect, false);
+document.getElementById("forwardButton").onclick = bumpTempo;
+// document.getElementById('forwardButton').addEventListener('onclick', bumpTempo, false);
+document.getElementById('files').addEventListener('change', handleFileSelect, false);
+
+
