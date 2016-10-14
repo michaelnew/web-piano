@@ -481,32 +481,6 @@ midi.timeWarp = 1;
 midi.startDelay = 0;
 midi.BPM = 120;
 
-midi.setTempoMultiplier = function(t) {
-	MIDI.setTempoMultiplier(t);
-
-	for (var key in eventQueue) {
-		event = eventQueue[key];
-
-		if (event.event.subtype == 'noteOn') {
-			window.clearInterval(event.interval);
-			if (event.source) {
-				window.clearTimeout(event.source);
-				event.source.disconnect(0);
-			}	
-			event["source"] = MIDI.noteOn(event.channelId, event.event.noteNumber, event.event.velocity, event.delay);
-		}
-		// noteoff events probably need to be killed, but not for currently playing notes
-		//  else if (event.event.subtype == 'noteOff') {
-		// 	window.clearInterval(event.interval);
-		// 	if (event.source) {
-		// 		window.clearTimeout(event.source);
-		// 		event.source.disconnect(0);
-		// 	}	
-		// 	event["source"] = MIDI.noteOff(event.channelId, event.event.noteNumber, event.delay);
-		// }
-	}
-};
-
 midi.start =
 midi.resume = function(onsuccess) {
     if (midi.currentTime < -1) {
@@ -740,7 +714,6 @@ var getNow = function() {
 };
 
 var startAudio = function(currentTime, fromCache, onsuccess) {
-	console.log("startaudio called");
 	if (!midi.replayer) {
 		return;
 	}
@@ -777,7 +750,7 @@ var startAudio = function(currentTime, fromCache, onsuccess) {
 	///
 	for (var n = 0; n < length && messages < 100; n++) {
 		var obj = data[n];
-		if ((queuedTime += obj[1]) < currentTime) {
+		if ((queuedTime += obj[1]) <= currentTime) {
 			offset = queuedTime;
 			continue;
 		}
@@ -809,8 +782,6 @@ var startAudio = function(currentTime, fromCache, onsuccess) {
 				eventQueue.push({
 				    event: event,
 				    time: queueTime,
-				    channelId: channelId,
-				    delay: delay,
 				    source: MIDI.noteOn(channelId, event.noteNumber, event.velocity, delay),
 				    interval: scheduleTracking(channelId, note, queuedTime + midi.startDelay, offset - foffset, 144, event.velocity)
 				});
@@ -822,8 +793,6 @@ var startAudio = function(currentTime, fromCache, onsuccess) {
 				eventQueue.push({
 				    event: event,
 				    time: queueTime,
-				    channelId: channelId,
-				    delay: delay,
 				    source: MIDI.noteOff(channelId, event.noteNumber, delay),
 				    interval: scheduleTracking(channelId, note, queuedTime, offset - foffset, 128, 0)
 				});
@@ -948,7 +917,6 @@ var stopAudio = function() {
 		midi.pitchBend = function(channel, program, delay) { };
 
 		midi.noteOn = function(channel, note, velocity, delay) {
-			console.log("called shorter noteOn function");
 			var id = noteToKey[note];
 			if (!notes[id]) return;
 			if (delay) {
@@ -1040,15 +1008,10 @@ var stopAudio = function() {
 		var effects = {};
 		var masterVolume = 127;
 		var audioBuffers = {};
-		var tempoMultiplier = 1.0;
 		///
 		midi.audioBuffers = audioBuffers;
 		midi.send = function(data, delay) { };
 		midi.setController = function(channelId, type, value, delay) { };
-
-		midi.setTempoMultiplier = function(t) {
-			tempoMultiplier = t;
-		}
 
 		midi.setVolume = function(channelId, volume, delay) {
 			if (delay) {
@@ -1085,7 +1048,6 @@ var stopAudio = function() {
 		};
 
 		midi.noteOn = function(channelId, noteId, velocity, delay) {
-			console.log("calling longer noteOn function");
 			delay = delay || 0;
 
 			/// check whether the note exists
@@ -1102,9 +1064,7 @@ var stopAudio = function() {
 			if (delay < ctx.currentTime) {
 				delay += ctx.currentTime;
 			}
-
-			delay = adjustDelay(delay);
-
+		
 			/// create audio buffer
 			if (useStreamingBuffer) {
 				var source = ctx.createMediaElementSource(buffer);
@@ -1162,7 +1122,6 @@ var stopAudio = function() {
 				if (delay < ctx.currentTime) {
 					delay += ctx.currentTime;
 				}
-				delay = adjustDelay(delay);
 				///
 				var source = sources[channelId + '' + noteId];
 				if (source) {
@@ -1349,14 +1308,6 @@ var stopAudio = function() {
 				};
 				request.send();
 			}
-		};
-
-		function adjustDelay(delay) {
-			// adjust delay based on tempo multiplier
-			var diff = delay - ctx.currentTime;
-			delay -= diff - (diff * tempoMultiplier);
-			console.log(tempoMultiplier);
-			return delay;
 		};
 		
 		function createAudioContext() {

@@ -76,7 +76,7 @@ function handleFileSelect(evt) {
       // Closure to capture the file information.
       reader.onload = (function(theFile) {
         return function(e) {
-        	player.tempoMultiplier = 2.0;
+        	// player.tempoMultiplier = 2.0;
 			player.loadFile(e.target.result, player.start);
 
           // To use jasmid, load the file as a binary string (reader.readAsBinaryString(f))
