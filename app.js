@@ -21,29 +21,29 @@ MIDI.loadPlugin({
 });
 
 var MIDIPlayerPercentage = function(player) {
-		// update the timestamp
-		var time1 = document.getElementById("time");
+	// update the timestamp
+	var time1 = document.getElementById("time");
 
-		function timeFormatting(n) {
-			var minutes = n / 60 >> 0;
-			var seconds = String(n - (minutes * 60) >> 0);
-			if (seconds.length == 1) seconds = "0" + seconds;
-			return minutes + ":" + seconds;
-		};
-
-		player.setAnimation(function(data, element) {
-			var percent = data.now / data.end;
-			var now = data.now >> 0; // where we are now
-			var end = data.end >> 0; // end of song
-
-			// // makes the player repeat
-			// if (now === end) { // go to next song
-			// 	player.currentTime = 0;
-			// 	player.resume();
-			// }
-			time1.innerHTML = timeFormatting(now);
-		});
+	function timeFormatting(n) {
+		var minutes = n / 60 >> 0;
+		var seconds = String(n - (minutes * 60) >> 0);
+		if (seconds.length == 1) seconds = "0" + seconds;
+		return minutes + ":" + seconds;
 	};
+
+	player.setAnimation(function(data, element) {
+		var percent = data.now / data.end;
+		var now = data.now >> 0; // where we are now
+		var end = data.end >> 0; // end of song
+
+		// // makes the player repeat
+		// if (now === end) { // go to next song
+		// 	player.currentTime = 0;
+		// 	player.resume();
+		// }
+		time1.innerHTML = timeFormatting(now);
+	});
+};
 
 function bumpTempo(evt) {
 	if (player != null) {
@@ -96,3 +96,40 @@ document.getElementById("forwardButton").onclick = bumpTempo;
 document.getElementById('files').addEventListener('change', handleFileSelect, false);
 
 
+
+
+if (!Array.prototype.remove) {
+  	Array.prototype.remove = function(val) {
+		var i = this.indexOf(val);
+		return i>-1 ? this.splice(i, 1) : [];
+	};
+}
+
+var triggeredKeyCodes = [];
+
+document.onkeydown = function (e) {
+	e = e || window.event;
+	
+	var alreadyTriggered = false;
+    for (var i = 0, kc; kc = triggeredKeyCodes[i]; i++) {
+		console.log(kc);
+		if (kc == e.keyCode) {
+			console.log("key already triggered");
+			alreadyTriggered = true;
+		}
+	}
+
+	if (!alreadyTriggered) {
+		MIDI.noteOn(0, 50, 127, 0);
+		triggeredKeyCodes.push(e.keyCode);
+
+		console.log("key pressed " + e.keyCode);
+	}
+};
+
+document.onkeyup = function (e) {
+	e = e || window.event;
+	console.log("keyup fired " + e.keyCode);
+	MIDI.noteOff(0, 50, 0);
+	triggeredKeyCodes.remove(e.keyCode);
+};
