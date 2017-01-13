@@ -120,7 +120,7 @@ document.onkeydown = function (e) {
 	}
 
 	if (!alreadyTriggered) {
-		MIDI.noteOn(0, 50, 127, 0);
+		//MIDI.noteOn(0, 50, 127, 0);
 		triggeredKeyCodes.push(e.keyCode);
 
 		console.log("key pressed " + e.keyCode);
@@ -129,7 +129,14 @@ document.onkeydown = function (e) {
 
 document.onkeyup = function (e) {
 	e = e || window.event;
-	console.log("keyup fired " + e.keyCode);
-	MIDI.noteOff(0, 50, 0);
-	triggeredKeyCodes.remove(e.keyCode);
+	//console.log("keyup fired " + e.keyCode);
+	//MIDI.noteOff(0, 50, 0);
+
+	var temp = triggeredKeyCodes;
+	triggeredKeyCodes = [];
+    for (var i = 0, kc; kc = temp[i]; i++) {
+		if (e.keyCode != kc) {
+			triggeredKeyCodes.push
+		}
+	}
 };
