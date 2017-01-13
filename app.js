@@ -132,11 +132,12 @@ document.onkeyup = function (e) {
 	//console.log("keyup fired " + e.keyCode);
 	MIDI.noteOff(0, e.keyCode, 0);
 
-	var temp = triggeredKeyCodes;
+	var temp = triggeredKeyCodes.slice();
 	triggeredKeyCodes = [];
     for (var i = 0, kc; kc = temp[i]; i++) {
 		if (e.keyCode != kc) {
-			triggeredKeyCodes.push
+			triggeredKeyCodes.push(kc);
 		}
 	}
+	console.log(triggeredKeyCodes);
 };
