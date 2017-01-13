@@ -112,25 +112,25 @@ document.onkeydown = function (e) {
 	
 	var alreadyTriggered = false;
     for (var i = 0, kc; kc = triggeredKeyCodes[i]; i++) {
-		console.log(kc);
+		//console.log(kc);
 		if (kc == e.keyCode) {
-			console.log("key already triggered");
+			//console.log("key already triggered");
 			alreadyTriggered = true;
 		}
 	}
 
 	if (!alreadyTriggered) {
-		//MIDI.noteOn(0, 50, 127, 0);
+		MIDI.noteOn(0, e.keyCode, 127, 0);
 		triggeredKeyCodes.push(e.keyCode);
 
-		console.log("key pressed " + e.keyCode);
+		//console.log("key pressed " + e.keyCode);
 	}
 };
 
 document.onkeyup = function (e) {
 	e = e || window.event;
 	//console.log("keyup fired " + e.keyCode);
-	//MIDI.noteOff(0, 50, 0);
+	MIDI.noteOff(0, e.keyCode, 0);
 
 	var temp = triggeredKeyCodes;
 	triggeredKeyCodes = [];
