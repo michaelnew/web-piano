@@ -99,8 +99,8 @@ function handleFileSelect(evt) {
 	console.log("fired handlefileSelect");
 }
 
-document.getElementById("forwardButton").onclick = bumpTempo;
-document.getElementById('files').addEventListener('change', handleFileSelect, false);
+//document.getElementById("forwardButton").onclick = bumpTempo;
+//document.getElementById('files').addEventListener('change', handleFileSelect, false);
 
 
 
