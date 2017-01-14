@@ -948,7 +948,7 @@ var stopAudio = function() {
 		midi.pitchBend = function(channel, program, delay) { };
 
 		midi.noteOn = function(channel, note, velocity, delay) {
-			console.log("called shorter noteOn function");
+			//console.log("called shorter noteOn function");
 			var id = noteToKey[note];
 			if (!notes[id]) return;
 			if (delay) {
@@ -1085,7 +1085,7 @@ var stopAudio = function() {
 		};
 
 		midi.noteOn = function(channelId, noteId, velocity, delay) {
-			console.log("calling longer noteOn function");
+			//console.log("calling longer noteOn function");
 			delay = delay || 0;
 
 			/// check whether the note exists
@@ -1355,7 +1355,7 @@ var stopAudio = function() {
 			// adjust delay based on tempo multiplier
 			var diff = delay - ctx.currentTime;
 			delay -= diff - (diff * tempoMultiplier);
-			console.log(tempoMultiplier);
+			//console.log(tempoMultiplier);
 			return delay;
 		};
 		

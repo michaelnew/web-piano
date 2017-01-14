@@ -1,4 +1,12 @@
+var keyCodeMap;
 var player;
+
+$( document ).ready(function() {
+	 
+	$.getJSON( "data/test.json", function( data ) {
+		keyCodeMap = data["keymap"];
+	});
+});
 
 // simple example to get started;
 MIDI.loadPlugin({
@@ -92,52 +100,62 @@ function handleFileSelect(evt) {
 }
 
 document.getElementById("forwardButton").onclick = bumpTempo;
-// document.getElementById('forwardButton').addEventListener('onclick', bumpTempo, false);
 document.getElementById('files').addEventListener('change', handleFileSelect, false);
 
 
 
 
-if (!Array.prototype.remove) {
-  	Array.prototype.remove = function(val) {
-		var i = this.indexOf(val);
-		return i>-1 ? this.splice(i, 1) : [];
-	};
+function translateKeyCode(kc) {
+	var translated = keyCodeMap[kc];
+	if (translated == null) {
+		translated = kc;
+	}
+	return translated;
 }
 
+
 var triggeredKeyCodes = [];
+var keyCodeRecorder = [];
 
 document.onkeydown = function (e) {
 	e = e || window.event;
+
+	//console.log(e.keyCode);
+	//console.log(e.key);
+	//console.log(e.charCode);
 	
+	var keyCode = translateKeyCode(e.keyCode);
 	var alreadyTriggered = false;
+
     for (var i = 0, kc; kc = triggeredKeyCodes[i]; i++) {
 		//console.log(kc);
-		if (kc == e.keyCode) {
+		if (kc == keyCode) {
 			//console.log("key already triggered");
 			alreadyTriggered = true;
 		}
 	}
 
 	if (!alreadyTriggered) {
-		MIDI.noteOn(0, e.keyCode, 127, 0);
-		triggeredKeyCodes.push(e.keyCode);
+		MIDI.noteOn(0, keyCode, 127, 0);
+		triggeredKeyCodes.push(keyCode);
 
-		//console.log("key pressed " + e.keyCode);
+		console.log("key pressed " + e.keyCode + " translated to " + keyCode);
+		//keyCodeRecorder.push(e.keyCode);
+		//console.log(keyCodeRecorder);
 	}
 };
 
 document.onkeyup = function (e) {
 	e = e || window.event;
 	//console.log("keyup fired " + e.keyCode);
-	MIDI.noteOff(0, e.keyCode, 0);
+	var keyCode = translateKeyCode(e.keyCode);
+	MIDI.noteOff(0, keyCode, 0);
 
 	var temp = triggeredKeyCodes.slice();
 	triggeredKeyCodes = [];
     for (var i = 0, kc; kc = temp[i]; i++) {
-		if (e.keyCode != kc) {
+		if (keyCode != kc) {
 			triggeredKeyCodes.push(kc);
 		}
 	}
-	console.log(triggeredKeyCodes);
 };

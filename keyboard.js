@@ -61,6 +61,6 @@ function onMIDIMessage(message) {
 			break;
 	}
 	
-	console.log('data', data, 'cmd', cmd, 'channel', channel);
+	//console.log('data', data, 'cmd', cmd, 'channel', channel);
 	// logger(keyData, 'key data', data); 
 }
