@@ -140,8 +140,9 @@ document.onkeydown = function (e) {
 		triggeredKeyCodes.push(keyCode);
 
 		console.log("key pressed " + e.keyCode + " translated to " + keyCode);
-		circle.graphics.beginFill("darkviolet").drawCircle(0, 0, 50);
-		stage.update();
+
+		toggleKey(circle, true);
+
 		//keyCodeRecorder.push(e.keyCode);
 		//console.log(keyCodeRecorder);
 	}
@@ -153,9 +154,7 @@ document.onkeyup = function (e) {
 	var keyCode = translateKeyCode(e.keyCode);
 	MIDI.noteOff(0, keyCode, 0);
 
-
-	circle.graphics.beginFill("deepskyblue").drawCircle(0, 0, 50);
-	stage.update();
+	toggleKey(circle, false);
 
 	var temp = triggeredKeyCodes.slice();
 	triggeredKeyCodes = [];
@@ -164,18 +163,30 @@ document.onkeyup = function (e) {
 			triggeredKeyCodes.push(kc);
 		}
 	}
+
 };
 
 var circle;
 var stage;
 
+function toggleKey(shape, on) {
+	if (on) {
+		shape.graphics.clear().beginStroke("#222").beginFill("DarkViolet").drawRoundRectComplex(0, 0, 50, 100, 5,5,5,5).endFill().endStroke();
+	} else {
+		shape.graphics.clear().beginStroke("#222").beginFill("DeepSkyBlue").drawRoundRectComplex(0, 0, 50, 100, 5,5,5,5).endFill().endStroke();
+	}
+	stage.update();
+}
+
 // Easel.JS
 function init() {
 	stage = new createjs.Stage("demoCanvas");
+
 	circle = new createjs.Shape();
-	circle.graphics.beginFill("DeepSkyBlue").drawCircle(0, 0, 50);
+	toggleKey(circle, false);
 	circle.x = 100;
 	circle.y = 100;
+
 	stage.addChild(circle);
 	stage.update();
 }
