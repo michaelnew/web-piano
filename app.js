@@ -170,10 +170,11 @@ var circle;
 var stage;
 
 function toggleKey(shape, on) {
+	// use #55573 for black keys
 	if (on) {
-		shape.graphics.clear().beginStroke("#222").beginFill("DarkViolet").drawRoundRectComplex(0, 0, 50, 100, 5,5,5,5).endFill().endStroke();
+		shape.graphics.clear().beginStroke("#222").beginFill("#3BBFC0").drawRoundRectComplex(0, 0, 50, 200, 5,5,5,5).endFill().endStroke();
 	} else {
-		shape.graphics.clear().beginStroke("#222").beginFill("DeepSkyBlue").drawRoundRectComplex(0, 0, 50, 100, 5,5,5,5).endFill().endStroke();
+		shape.graphics.clear().beginStroke("#222").beginFill("#FFF").drawRoundRectComplex(0, 0, 50, 200, 5,5,5,5).endFill().endStroke();
 	}
 	stage.update();
 }
