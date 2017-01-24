@@ -61,6 +61,8 @@ function onMIDIMessage(message) {
 			break;
 	}
 	
-	//console.log('data', data, 'cmd', cmd, 'channel', channel);
+	if (channel != 8 && channel != 14) {
+		console.log('data', data, 'cmd', cmd, 'channel', channel);
+	}
 	// logger(keyData, 'key data', data); 
 }

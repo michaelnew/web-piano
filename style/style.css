@@ -1,3 +1,11 @@
 body {
 	background-color: #222;
 }
+
+#mainDiv {
+	text-align: center;
+}
+
+#demoCanvas {
+	display: inline-block;
+}

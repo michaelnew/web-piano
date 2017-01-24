@@ -1,10 +1,18 @@
+const xOffset = 0;
+const yOffset = 100;
+
+const keyWidth = 30;
+const keyHeight = 130;
+const keyGap = 2;
+const keyCornerRadius = 9;
+
+const blackNotes = [22,25,27,30,32,34,37,39,42,44,46,49,51,54,56,58,61,63,66,68,70,73,75,78,80,82,85,87,90,92,94,97,99,102,104,106];
+
 function PianoVisualizer(stage) {
 	this.stage = stage;
 
-	var k = new key(57, 0, this.stage);
-	this.keyMap = {"57": k};
-
-	this.toggleKey(57, false);
+	this.keyMap = {};
+	this.generateKeys(45, 75);
 }
 
 PianoVisualizer.prototype.toggleKey = function(note, on) {
@@ -17,22 +25,46 @@ PianoVisualizer.prototype.toggleKey = function(note, on) {
 	}
 }
 
+PianoVisualizer.prototype.generateKeys = function(start, end) {
+	var p = 0;
+	for (var i = start; i <= end; i++) {
 
-function key(code, position, stage) {
-	this.code = code;
+		var isBlack = blackNotes.indexOf(i) > -1;
+
+		var k = new key(p, isBlack);
+		this.stage.addChild(k.keyShape);
+
+		this.keyMap[i] = k;
+
+		this.toggleKey(i, false);
+		if (!isBlack) p++;
+	}
+	console.log(this.keyMap);
+}
+
+
+function key(position, isBlack) {
+	this.isBlack = isBlack;
 
 	this.keyShape = new createjs.Shape();
-	this.keyShape.x = 100;
-	this.keyShape.y = 100;
-
-	stage.addChild(this.keyShape);
+	this.keyShape.x = xOffset + (position * (keyWidth + keyGap));
+	this.keyShape.y = yOffset;
 }
 
 key.prototype.toggle = function(on) {
 	// use #55573 for black keys
-	if (on) {
-		this.keyShape.graphics.clear().beginStroke("#282").beginFill("#3BBFC0").drawRoundRectComplex(0, 0, 50, 200, 5,5,5,5).endFill().endStroke();
+	const r = keyCornerRadius;
+	if (this.isBlack) {
+		if (on) {
+			this.keyShape.graphics.clear().beginStroke("#282").beginFill("#3BBFC0").drawRoundRectComplex(0, 0, keyWidth*.6, keyHeight*.6, 0,0,r,r).endFill().endStroke();
+		} else {
+			this.keyShape.graphics.clear().beginStroke("#222").beginFill("#4B4D49").drawRoundRectComplex(0, 0, keyWidth*.6, keyHeight*.6, 0,0,r,r).endFill().endStroke();
+		}
 	} else {
-		this.keyShape.graphics.clear().beginStroke("#222").beginFill("#FFF").drawRoundRectComplex(0, 0, 50, 200, 5,5,5,5).endFill().endStroke();
+		if (on) {
+			this.keyShape.graphics.clear().beginStroke("#282").beginFill("#3BBFC0").drawRoundRectComplex(0, 0, keyWidth, keyHeight, 0,0,r,r).endFill().endStroke();
+		} else {
+			this.keyShape.graphics.clear().beginStroke("#222").beginFill("#FFF").drawRoundRectComplex(0, 0, keyWidth, keyHeight, 0,0,r,r).endFill().endStroke();
+		}
 	}
 }
