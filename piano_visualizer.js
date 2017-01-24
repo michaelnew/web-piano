@@ -80,10 +80,11 @@ key.prototype.toggle = function(on) {
 	const br = blackKeyCornerRadius;
 
 	if (this.isBlack) {
+		this.keyShape.graphics.setStrokeStyle(6);
 		if (on) {
-			this.keyShape.graphics.clear().beginStroke("#282").beginFill("#3BBFC0").drawRoundRectComplex(0, 0, blackKeyWidth, blackKeyHeight, 0,0,br,br).endFill().endStroke();
+			this.keyShape.graphics.clear().setStrokeStyle(3).beginStroke("#222").beginFill("#3BBFC0").drawRoundRectComplex(0, 0, blackKeyWidth, blackKeyHeight, 0,0,br,br).endFill().endStroke();
 		} else {
-			this.keyShape.graphics.clear().beginStroke("#222").beginFill("#4B4D49").drawRoundRectComplex(0, 0, blackKeyWidth, blackKeyHeight, 0,0,br,br).endFill().endStroke();
+			this.keyShape.graphics.clear().setStrokeStyle(3).beginStroke("#222").beginFill("#4B4D49").drawRoundRectComplex(0, 0, blackKeyWidth, blackKeyHeight, 0,0,br,br).endFill().endStroke();
 		}
 	} else {
 		if (on) {
