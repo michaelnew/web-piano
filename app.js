@@ -1,5 +1,6 @@
 var keyCodeMap;
 var player;
+var piano;
 
 $( document ).ready(function() {
 	 
@@ -24,88 +25,12 @@ MIDI.loadPlugin({
 		// player.BPM = 300;
 		// player.loadFile(song, player.start);
 
-		MIDIPlayerPercentage(player);
+		//MIDIPlayerPercentage(player);
 	}
 });
 
-var MIDIPlayerPercentage = function(player) {
-	// update the timestamp
-	var time1 = document.getElementById("time");
 
-	function timeFormatting(n) {
-		var minutes = n / 60 >> 0;
-		var seconds = String(n - (minutes * 60) >> 0);
-		if (seconds.length == 1) seconds = "0" + seconds;
-		return minutes + ":" + seconds;
-	};
-
-	player.setAnimation(function(data, element) {
-		var percent = data.now / data.end;
-		var now = data.now >> 0; // where we are now
-		var end = data.end >> 0; // end of song
-
-		// // makes the player repeat
-		// if (now === end) { // go to next song
-		// 	player.currentTime = 0;
-		// 	player.resume();
-		// }
-		time1.innerHTML = timeFormatting(now);
-	});
-};
-
-function bumpTempo(evt) {
-	if (player != null) {
-		console.log("increasing tempo");
-		// player.BPM = 500;
-		// player.replayer.bpmOverride = true;
-		// player.replayer.beatsPerMinute = 500;
-		// player.timeWarp = 2;
-		player.setTempoMultiplier(.5);
-		// MIDI.setTempoMultiplier(.5);
-		// player.pause();
-		// player.resume();
-	}
-	// player.debug();
-}
-
-function handleFileSelect(evt) {
-    var files = evt.target.files; // FileList object
-
-    // files is a FileList of File objects. List some properties.
-    var output = [];
-    for (var i = 0, f; f = files[i]; i++) {
-      output.push('<li><strong>', escape(f.name), '</strong> (', f.type || 'n/a', ') - ',
-                  f.size, ' bytes, last modified: ',
-                  f.lastModifiedDate ? f.lastModifiedDate.toLocaleDateString() : 'n/a',
-                  '</li>');
-
-      var reader = new FileReader();
-
-      // Closure to capture the file information.
-      reader.onload = (function(theFile) {
-        return function(e) {
-        	// player.tempoMultiplier = 2.0;
-			player.loadFile(e.target.result, player.start);
-
-          // To use jasmid, load the file as a binary string (reader.readAsBinaryString(f))
-          // var m = MidiFile(e.target.result);
-        };
-      })(f);
-
-      // reader.readAsBinaryString(f); // use for jasmid
-      reader.readAsDataURL(f);
-    }
-    document.getElementById('list').innerHTML = '<ul>' + output.join('') + '</ul>';
-	console.log("fired handlefileSelect");
-}
-
-//document.getElementById("forwardButton").onclick = bumpTempo;
-//document.getElementById('files').addEventListener('change', handleFileSelect, false);
-
-
-
-
-function translateKeyCode(kc) {
+function keyCodeToNote(kc) {
 	var translated = keyCodeMap[kc];
 	if (translated == null) {
 		translated = kc;
@@ -124,24 +49,24 @@ document.onkeydown = function (e) {
 	//console.log(e.key);
 	//console.log(e.charCode);
 	
-	var keyCode = translateKeyCode(e.keyCode);
+	var note = keyCodeToNote(e.keyCode);
 	var alreadyTriggered = false;
 
     for (var i = 0, kc; kc = triggeredKeyCodes[i]; i++) {
 		//console.log(kc);
-		if (kc == keyCode) {
+		if (kc == note) {
 			//console.log("key already triggered");
 			alreadyTriggered = true;
 		}
 	}
 
 	if (!alreadyTriggered) {
-		MIDI.noteOn(0, keyCode, 127, 0);
-		triggeredKeyCodes.push(keyCode);
+		MIDI.noteOn(0, note, 127, 0);
+		triggeredKeyCodes.push(note);
 
-		console.log("key pressed " + e.keyCode + " translated to " + keyCode);
+		console.log("key pressed " + e.keyCode + " translated to " + note);
 
-		toggleKey(circle, true);
+		piano.toggleKey(note, true);
 
 		//keyCodeRecorder.push(e.keyCode);
 		//console.log(keyCodeRecorder);
@@ -151,43 +76,24 @@ document.onkeydown = function (e) {
 document.onkeyup = function (e) {
 	e = e || window.event;
 	//console.log("keyup fired " + e.keyCode);
-	var keyCode = translateKeyCode(e.keyCode);
-	MIDI.noteOff(0, keyCode, 0);
+	var note = keyCodeToNote(e.keyCode);
+	MIDI.noteOff(0, note, 0);
 
-	toggleKey(circle, false);
+	piano.toggleKey(note, false);
 
 	var temp = triggeredKeyCodes.slice();
 	triggeredKeyCodes = [];
     for (var i = 0, kc; kc = temp[i]; i++) {
-		if (keyCode != kc) {
+		if (note != kc) {
 			triggeredKeyCodes.push(kc);
 		}
 	}
 
 };
 
-var circle;
-var stage;
-
-function toggleKey(shape, on) {
-	// use #55573 for black keys
-	if (on) {
-		shape.graphics.clear().beginStroke("#222").beginFill("#3BBFC0").drawRoundRectComplex(0, 0, 50, 200, 5,5,5,5).endFill().endStroke();
-	} else {
-		shape.graphics.clear().beginStroke("#222").beginFill("#FFF").drawRoundRectComplex(0, 0, 50, 200, 5,5,5,5).endFill().endStroke();
-	}
-	stage.update();
-}
 
 // Easel.JS
 function init() {
-	stage = new createjs.Stage("demoCanvas");
-
-	circle = new createjs.Shape();
-	toggleKey(circle, false);
-	circle.x = 100;
-	circle.y = 100;
-
-	stage.addChild(circle);
-	stage.update();
+	var stage = new createjs.Stage("demoCanvas");
+	piano = new PianoVisualizer(stage);
 }
