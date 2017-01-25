@@ -44,18 +44,12 @@ var keyCodeRecorder = [];
 
 document.onkeydown = function (e) {
 	e = e || window.event;
-
-	//console.log(e.keyCode);
-	//console.log(e.key);
-	//console.log(e.charCode);
 	
 	var note = keyCodeToNote(e.keyCode);
 	var alreadyTriggered = false;
 
     for (var i = 0, kc; kc = triggeredKeyCodes[i]; i++) {
-		//console.log(kc);
 		if (kc == note) {
-			//console.log("key already triggered");
 			alreadyTriggered = true;
 		}
 	}
