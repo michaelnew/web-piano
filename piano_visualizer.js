@@ -16,7 +16,7 @@ function PianoVisualizer(stage) {
 	this.stage = stage;
 
 	this.keyMap = {};
-	this.generateKeys(43, 86);
+	this.generateKeys(41, 100);
 }
 
 PianoVisualizer.prototype.toggleKey = function(note, on) {
