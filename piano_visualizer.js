@@ -1,5 +1,5 @@
 const xOffset = 0;
-const yOffset = 100;
+const yOffset = 250;
 
 const keyWidth = 30;
 const keyHeight = 130;
@@ -17,10 +17,40 @@ function PianoVisualizer(stage) {
 
 	this.keyMap = {};
 	this.generateKeys(41, 100);
+	this.showLabels();
+}
+
+PianoVisualizer.prototype.showLabels = function() {
+	let container = new createjs.Container();
+	const width = 200;
+	const y = 160
+	const fontSize = "130px"
+
+	let text = new createjs.Text("3", "100 " + fontSize + " Roboto", "#D2CFCE");
+	text.textBaseline = "alphabetic";
+	container.addChild(text);
+
+	text = new createjs.Text(":", "100 " + fontSize + " Roboto", "#D2CFCE");
+	text.textBaseline = "alphabetic";
+	text.x = 90; 
+	text.y = -6;
+	container.addChild(text);
+
+	text = new createjs.Text("2", "100 " + fontSize + " Roboto", "#D2CFCE");
+	text.textBaseline = "alphabetic";
+	text.x = 130;
+	container.addChild(text);
+
+	container.x = this.stage.canvas.width * .5 - width *.5;
+	container.y = y;
+	this.stage.addChild(container);
+	this.stage.update();
+
+	console.log(this.stage.canvas.width);
 }
 
 PianoVisualizer.prototype.toggleKey = function(note, on) {
-	var k = this.keyMap[note];
+	let k = this.keyMap[note];
 	if (k) {
 		k.toggle(on);
 		this.stage.update();
@@ -30,15 +60,15 @@ PianoVisualizer.prototype.toggleKey = function(note, on) {
 }
 
 PianoVisualizer.prototype.generateKeys = function(start, end) {
-	var p = 0;
-	var blackKeys = [];
-	for (var i = start; i <= end; i++) {
+	let p = 0;
+	let blackKeys = [];
+	for (let i = start; i <= end; i++) {
 
-		var isBlack = blackNotes.indexOf(i) > -1;
+		let isBlack = blackNotes.indexOf(i) > -1;
 
 		if (isBlack) p--;
 
-		var k = new key(p, isBlack);
+		let k = new key(p, isBlack);
 		this.stage.addChild(k.keyShape);
 
 		if (isBlack) {
@@ -53,7 +83,7 @@ PianoVisualizer.prototype.generateKeys = function(start, end) {
 
 	console.log(this.keyMap);
 
-    for (var i = 0, k; k = blackKeys[i]; i++) {
+    for (let i = 0, k; k = blackKeys[i]; i++) {
 		console.log(k);
 		this.stage.setChildIndex(k.keyShape, this.stage.getNumChildren()-1);
 		this.stage.update();
