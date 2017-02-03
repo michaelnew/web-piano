@@ -90,6 +90,19 @@ document.onkeyup = function (e) {
 function init() {
 	var stage = new createjs.Stage("demoCanvas");
 
+	if (window.devicePixelRatio) {
+		// grab the width and height from canvas
+		var height = stage.canvas.getAttribute('height');
+		var width = stage.canvas.getAttribute('width');
+		// reset the canvas width and height with window.devicePixelRatio applied
+		stage.canvas.setAttribute('width', Math.round(width * window.devicePixelRatio));
+		stage.canvas.setAttribute('height', Math.round( height * window.devicePixelRatio));
+		// force the canvas back to the original size using css
+		stage.canvas.style.width = width+"px";
+		stage.canvas.style.height = height+"px";
+		// set CreateJS to render scaled
+		stage.scaleX = stage.scaleY = window.devicePixelRatio;
+	}
 
 	piano = new PianoVisualizer(stage);
 }

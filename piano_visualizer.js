@@ -31,6 +31,10 @@ function PianoVisualizer(stage) {
 	this.stage.update();
 }
 
+PianoVisualizer.prototype.getCanvasWidth = function() {
+	return this.stage.canvas.width / this.stage.scaleX;
+}
+
 PianoVisualizer.prototype.showLabels = function(left, right) {
 	let container = new createjs.Container();
 	const width = 200;
@@ -52,12 +56,10 @@ PianoVisualizer.prototype.showLabels = function(left, right) {
 	text.x = 130;
 	container.addChild(text);
 
-	container.x = this.stage.canvas.width * .5 - width *.5;
+	container.x = this.getCanvasWidth() * .5 - width *.5;
 	container.y = y;
 	this.stage.addChild(container);
 	this.stage.update();
-
-	console.log(this.stage.canvas.width);
 }
 
 PianoVisualizer.prototype.toggleKey = function(note, on) {
