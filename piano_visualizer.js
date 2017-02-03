@@ -17,16 +17,17 @@ function PianoVisualizer(stage) {
 
 	this.keyMap = {};
 	this.generateKeys(41, 100);
-	this.showLabels();
+	this.showLabels(4, 3);
 }
 
-PianoVisualizer.prototype.showLabels = function() {
+PianoVisualizer.prototype.showLabels = function(left, right) {
 	let container = new createjs.Container();
 	const width = 200;
-	const y = 160
+	//const y = 160
+	const y = 560
 	const fontSize = "130px"
 
-	let text = new createjs.Text("3", "100 " + fontSize + " Roboto", "#D2CFCE");
+	let text = new createjs.Text(left.toString(), "100 " + fontSize + " Roboto", "#D2CFCE");
 	text.textBaseline = "alphabetic";
 	container.addChild(text);
 
@@ -36,7 +37,7 @@ PianoVisualizer.prototype.showLabels = function() {
 	text.y = -6;
 	container.addChild(text);
 
-	text = new createjs.Text("2", "100 " + fontSize + " Roboto", "#D2CFCE");
+	text = new createjs.Text(right.toString(), "100 " + fontSize + " Roboto", "#D2CFCE");
 	text.textBaseline = "alphabetic";
 	text.x = 130;
 	container.addChild(text);
