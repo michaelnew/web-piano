@@ -89,5 +89,8 @@ document.onkeyup = function (e) {
 // Easel.JS
 function init() {
 	var stage = new createjs.Stage("demoCanvas");
+
+
 	piano = new PianoVisualizer(stage);
 }
+

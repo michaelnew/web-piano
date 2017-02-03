@@ -18,12 +18,22 @@ function PianoVisualizer(stage) {
 	this.keyMap = {};
 	this.generateKeys(41, 100);
 	this.showLabels(4, 3);
+
+	let line = new beatLine(this.keyMap[58]);
+	this.stage.addChild(line.shape);
+
+	let line2 = new beatLine(this.keyMap[78]);
+	this.stage.addChild(line2.shape);
+
+	let node = new beatNode(line2);
+	this.stage.addChild(node.shape);
+
+	this.stage.update();
 }
 
 PianoVisualizer.prototype.showLabels = function(left, right) {
 	let container = new createjs.Container();
 	const width = 200;
-	//const y = 160
 	const y = 560
 	const fontSize = "130px"
 
@@ -91,6 +101,26 @@ PianoVisualizer.prototype.generateKeys = function(start, end) {
 	}
 }
 
+function beatLine(key) {
+	this.shape = new createjs.Shape();
+
+	let kw = key.isBlack ? blackKeyWidth : keyWidth;
+	let lineWidth = 3;
+	let lineHeight = 300;
+
+	this.shape.x = key.keyShape.x + kw * .5 - lineWidth * .5;
+	this.shape.y = yOffset - lineHeight;
+	this.shape.graphics.clear().beginFill("#FF5657").drawRect(0, 0, lineWidth, lineHeight).endFill();
+}
+
+function beatNode(line) {
+	this.shape = new createjs.Shape();
+	const r = 6;
+
+	this.shape.x = line.shape.x + 1.5;
+	this.shape.y = r;
+	this.shape.graphics.clear().beginFill("#FF5657").drawCircle(0, 0, r).endFill();
+}
 
 function key(position, isBlack) {
 	this.isBlack = isBlack;
