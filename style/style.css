@@ -9,3 +9,7 @@ body {
 #demoCanvas {
 	display: inline-block;
 }
+
+#time {
+	color: #ffffff;
+}

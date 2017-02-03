@@ -1,6 +1,9 @@
 var keyCodeMap;
 var player;
 var piano;
+var stage;
+
+let beatDuration = 60 / .06; // measure in ms, so bpm / multiplier 
 
 $( document ).ready(function() {
 	 
@@ -58,8 +61,6 @@ document.onkeydown = function (e) {
 		MIDI.noteOn(0, note, 127, 0);
 		triggeredKeyCodes.push(note);
 
-		console.log("key pressed " + e.keyCode + " translated to " + note);
-
 		piano.toggleKey(note, true);
 
 		//keyCodeRecorder.push(e.keyCode);
@@ -82,13 +83,20 @@ document.onkeyup = function (e) {
 			triggeredKeyCodes.push(kc);
 		}
 	}
-
 };
 
 
+var time;
+
 // Easel.JS
 function init() {
-	var stage = new createjs.Stage("demoCanvas");
+	stage = new createjs.Stage("demoCanvas");
+
+	createjs.Ticker.timingMode = createjs.Ticker.RAF; // syncs to display, does not respect framerate value
+	//createjs.Ticker.timingMode = createjs.Ticker.RAF_SYNCHED; // synce to display but tries to use framerate
+	//createjs.Ticker.timingMode = createjs.Ticker.TIMEOUT; // does not sync to display, just uses a simple timer
+	createjs.Ticker.framerate = 60;
+	createjs.Ticker.addEventListener("tick", tick);
 
 	if (window.devicePixelRatio) {
 		// grab the width and height from canvas
@@ -104,6 +112,18 @@ function init() {
 		stage.scaleX = stage.scaleY = window.devicePixelRatio;
 	}
 
-	piano = new PianoVisualizer(stage);
+ 	piano = new PianoVisualizer(stage);
+	time = document.getElementById("time");
+}
+
+
+function tick(event) {
+	let p = (event.time % beatDuration) / beatDuration;
+
+	piano.tick(p);
+	
+	//var truncated = Math.floor(p * 100) / 100;
+	//time.innerHTML = truncated;
+	stage.update(event);
 }
 
