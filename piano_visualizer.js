@@ -12,7 +12,7 @@ const blackKeyCornerRadius = 6;
 
 const blackNotes = [22,25,27,30,32,34,37,39,42,44,46,49,51,54,56,58,61,63,66,68,70,73,75,78,80,82,85,87,90,92,94,97,99,102,104,106];
 
-const pixelsPerBeat = 300;
+const pixelsPerBeat = 200;
 
 const nodeRadius = 6;
 
@@ -25,6 +25,9 @@ function PianoVisualizer(stage) {
 
 	this.keyMap = {};
 	this.generateKeys(41, 100);
+
+	this.nodes = [];
+
 	this.showLabels(4, 3);
 
 	let line = new beatLine(this.keyMap[58]);
@@ -34,15 +37,24 @@ function PianoVisualizer(stage) {
 	this.stage.addChild(line2.shape);
 
 	let node = new beatNode(line2);
-	this.tempNode = node;
 	this.stage.addChild(node.shape);
+	this.nodes.push(node);
 
 	this.stage.update();
 }
 
 
 PianoVisualizer.prototype.tick = function(time) {
-	this.tempNode.shape.y = time * pixelsPerBeat;
+	// updated nodes
+    for (let i = 0, n; n = this.nodes[i]; i++) {
+		n.shape.y = (time - n.startBeat) * pixelsPerBeat;
+		if (n.shape.y / pixelsPerBeat > n.endBeat - n.startBeat) {
+			console.log("remove node");
+			let length = n.endBeat - n.startBeat;
+			n.startBeat += length;
+			n.endBeat += length;
+		}
+	}
 }
 
 PianoVisualizer.prototype.getCanvasWidth = function() {
@@ -129,6 +141,8 @@ function beatLine(key) {
 
 function beatNode(line) {
 	this.shape = new createjs.Shape();
+	this.startBeat = 0; 
+	this.endBeat = 3;
 
 	this.shape.x = line.shape.x + 1.5;
 	this.shape.y = nodeRadius;
@@ -137,6 +151,8 @@ function beatNode(line) {
 
 function key(position, isBlack) {
 	this.isBlack = isBlack;
+	this.durationInBeats = 3;
+	this.currentBeat = 0;
 
 	this.keyShape = new createjs.Shape();
 	if (isBlack) {

@@ -118,7 +118,8 @@ function init() {
 
 
 function tick(event) {
-	let p = (event.time % beatDuration) / beatDuration;
+	//let p = (event.time % beatDuration) / beatDuration;
+	let p = event.time / beatDuration;
 
 	piano.tick(p);
 	
