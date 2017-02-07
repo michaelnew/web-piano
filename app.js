@@ -1,6 +1,7 @@
 var keyCodeMap;
 var player;
 var piano;
+var beatVisualizer;
 var stage;
 
 let beatDuration = 60 / .06; // measure in ms, so bpm / multiplier 
@@ -86,7 +87,7 @@ document.onkeyup = function (e) {
 };
 
 
-var time;
+//var time;
 
 // Easel.JS
 function init() {
@@ -113,7 +114,12 @@ function init() {
 	}
 
  	piano = new PianoVisualizer(stage);
-	time = document.getElementById("time");
+	beatVisualizer = new BeatVisualizer(stage);
+
+	let p = piano.topCenterForKey(80);
+	beatVisualizer.addChannel(p);
+
+	//time = document.getElementById("time");
 }
 
 
@@ -121,7 +127,8 @@ function tick(event) {
 	//let p = (event.time % beatDuration) / beatDuration;
 	let p = event.time / beatDuration;
 
-	piano.tick(p);
+	//piano.tick(p);
+	beatVisualizer.tick(p);
 	
 	//var truncated = Math.floor(p * 100) / 100;
 	//time.innerHTML = truncated;

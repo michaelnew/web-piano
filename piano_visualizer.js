@@ -1,24 +1,3 @@
-const xOffset = 0;
-const yOffset = 250;
-
-const keyWidth = 30;
-const keyHeight = 130;
-const keyGap = 3;
-const keyCornerRadius = 9;
-
-const blackKeyWidth = 18*1.1;
-const blackKeyHeight = 80*1.1;
-const blackKeyCornerRadius = 6;
-
-const blackNotes = [22,25,27,30,32,34,37,39,42,44,46,49,51,54,56,58,61,63,66,68,70,73,75,78,80,82,85,87,90,92,94,97,99,102,104,106];
-
-const pixelsPerBeat = 200;
-
-const nodeRadius = 6;
-
-const beatLineHeight = 300;
-const beatLineWidth = 3;
-
 
 function PianoVisualizer(stage) {
 	this.stage = stage;
@@ -26,39 +5,26 @@ function PianoVisualizer(stage) {
 	this.keyMap = {};
 	this.generateKeys(41, 100);
 
-	this.nodes = [];
-
 	this.showLabels(4, 3);
-
-	let line = new beatLine(this.keyMap[58]);
-	this.stage.addChild(line.shape);
-
-	let line2 = new beatLine(this.keyMap[78]);
-	this.stage.addChild(line2.shape);
-
-	let node = new beatNode(line2);
-	this.stage.addChild(node.shape);
-	this.nodes.push(node);
-
 	this.stage.update();
 }
 
-
-PianoVisualizer.prototype.tick = function(time) {
-	// updated nodes
-    for (let i = 0, n; n = this.nodes[i]; i++) {
-		n.shape.y = (time - n.startBeat) * pixelsPerBeat;
-		if (n.shape.y / pixelsPerBeat > n.endBeat - n.startBeat) {
-			console.log("remove node");
-			let length = n.endBeat - n.startBeat;
-			n.startBeat += length;
-			n.endBeat += length;
-		}
-	}
-}
-
+// this should go into some kind of helper class
 PianoVisualizer.prototype.getCanvasWidth = function() {
 	return this.stage.canvas.width / this.stage.scaleX;
+}
+
+PianoVisualizer.prototype.topCenterForKey = function(note) {
+	let k = this.keyMap[note];
+	let p = 0;
+	if (k) {
+		let w = k.isBlack ? blackKeyWidth * .5 : keyWidth * .5;
+		p = k.shape.x + w;
+	} else {
+		console.log("key not found for " + note);
+	}
+	console.log(p);
+	return p;
 }
 
 PianoVisualizer.prototype.showLabels = function(left, right) {
@@ -108,7 +74,7 @@ PianoVisualizer.prototype.generateKeys = function(start, end) {
 		if (isBlack) p--;
 
 		let k = new key(p, isBlack);
-		this.stage.addChild(k.keyShape);
+		this.stage.addChild(k.shape);
 
 		if (isBlack) {
 			blackKeys.push(k);
@@ -124,29 +90,9 @@ PianoVisualizer.prototype.generateKeys = function(start, end) {
 
     for (let i = 0, k; k = blackKeys[i]; i++) {
 		console.log(k);
-		this.stage.setChildIndex(k.keyShape, this.stage.getNumChildren()-1);
+		this.stage.setChildIndex(k.shape, this.stage.getNumChildren()-1);
 		this.stage.update();
 	}
-}
-
-function beatLine(key) {
-	this.shape = new createjs.Shape();
-
-	let kw = key.isBlack ? blackKeyWidth : keyWidth;
-
-	this.shape.x = key.keyShape.x + kw * .5 - beatLineWidth * .5;
-	this.shape.y = yOffset - beatLineHeight;
-	this.shape.graphics.clear().beginFill("#FF5657").drawRect(0, 0, beatLineWidth, beatLineHeight).endFill();
-}
-
-function beatNode(line) {
-	this.shape = new createjs.Shape();
-	this.startBeat = 0; 
-	this.endBeat = 3;
-
-	this.shape.x = line.shape.x + 1.5;
-	this.shape.y = nodeRadius;
-	this.shape.graphics.clear().beginFill("#FF5657").drawCircle(0, 0, nodeRadius).endFill();
 }
 
 function key(position, isBlack) {
@@ -154,14 +100,14 @@ function key(position, isBlack) {
 	this.durationInBeats = 3;
 	this.currentBeat = 0;
 
-	this.keyShape = new createjs.Shape();
+	this.shape = new createjs.Shape();
 	if (isBlack) {
 		let extraOffset = (keyWidth + keyGap * .5) - blackKeyWidth * .5;
-		this.keyShape.x = xOffset + (position * (keyWidth + keyGap)) + extraOffset;
-		this.keyShape.y = yOffset - keyGap * .5;
+		this.shape.x = xOffset + (position * (keyWidth + keyGap)) + extraOffset;
+		this.shape.y = yOffset - keyGap * .5;
 	} else {
-		this.keyShape.x = xOffset + (position * (keyWidth + keyGap));
-		this.keyShape.y = yOffset;
+		this.shape.x = xOffset + (position * (keyWidth + keyGap));
+		this.shape.y = yOffset;
 	}
 }
 
@@ -172,15 +118,15 @@ key.prototype.toggle = function(on) {
 
 	if (this.isBlack) {
 		if (on) {
-			this.keyShape.graphics.clear().setStrokeStyle(keyGap).beginStroke("#222").beginFill("#3BBFC0").drawRoundRectComplex(0, 0, blackKeyWidth, blackKeyHeight, 0,0,br,br).endFill().endStroke();
+			this.shape.graphics.clear().setStrokeStyle(keyGap).beginStroke("#222").beginFill("#3BBFC0").drawRoundRectComplex(0, 0, blackKeyWidth, blackKeyHeight, 0,0,br,br).endFill().endStroke();
 		} else {
-			this.keyShape.graphics.clear().setStrokeStyle(keyGap).beginStroke("#222").beginFill("#4B4D49").drawRoundRectComplex(0, 0, blackKeyWidth, blackKeyHeight, 0,0,br,br).endFill().endStroke();
+			this.shape.graphics.clear().setStrokeStyle(keyGap).beginStroke("#222").beginFill("#4B4D49").drawRoundRectComplex(0, 0, blackKeyWidth, blackKeyHeight, 0,0,br,br).endFill().endStroke();
 		}
 	} else {
 		if (on) {
-			this.keyShape.graphics.clear().beginFill("#3BBFC0").drawRoundRectComplex(0, 0, keyWidth, keyHeight, 0,0,r,r).endFill();
+			this.shape.graphics.clear().beginFill("#3BBFC0").drawRoundRectComplex(0, 0, keyWidth, keyHeight, 0,0,r,r).endFill();
 		} else {
-			this.keyShape.graphics.clear().beginFill("#FFF").drawRoundRectComplex(0, 0, keyWidth, keyHeight, 0,0,r,r).endFill();
+			this.shape.graphics.clear().beginFill("#FFF").drawRoundRectComplex(0, 0, keyWidth, keyHeight, 0,0,r,r).endFill();
 		}
 	}
 }
