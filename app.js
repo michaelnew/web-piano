@@ -92,6 +92,7 @@ document.onkeyup = function (e) {
 // Easel.JS
 function init() {
 	stage = new createjs.Stage("demoCanvas");
+	//stage.enableMouseOver(4); // this is expensive, so it may be better to not use it 
 
 	createjs.Ticker.timingMode = createjs.Ticker.RAF; // syncs to display, does not respect framerate value
 	//createjs.Ticker.timingMode = createjs.Ticker.RAF_SYNCHED; // synce to display but tries to use framerate
@@ -114,10 +115,15 @@ function init() {
 	}
 
  	piano = new PianoVisualizer(stage);
-	beatVisualizer = new BeatVisualizer(stage);
+	beatVisualizer = new BeatVisualizer(stage, function(note) {
+		//MIDI.noteOn(0, note, 50, 0);
+		//MIDI.noteOff(0, note, .1);
+	});
 
-	beatVisualizer.addChannel(piano.topCenterForKey(80)).addSubdividedNodes(3);
-	beatVisualizer.addChannel(piano.topCenterForKey(70)).addSubdividedNodes(2);
+	let note1 = 69;
+	let note2 = 76;
+	beatVisualizer.addChannel(piano.topCenterForKey(note1), yOffset, note1).addSubdividedNodes(4);
+	beatVisualizer.addChannel(piano.topCenterForKey(note2), yOffset, note2).addSubdividedNodes(3);
 
 	//time = document.getElementById("time");
 }

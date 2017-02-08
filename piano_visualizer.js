@@ -50,14 +50,13 @@ PianoVisualizer.prototype.showLabels = function(left, right) {
 	container.x = this.getCanvasWidth() * .5 - width *.5;
 	container.y = y;
 	this.stage.addChild(container);
-	this.stage.update();
 }
 
 PianoVisualizer.prototype.toggleKey = function(note, on) {
 	let k = this.keyMap[note];
 	if (k) {
 		k.toggle(on);
-		this.stage.update();
+		//this.stage.update();
 	} else {
 		console.log("key not found for " + note);
 	}
@@ -90,7 +89,6 @@ PianoVisualizer.prototype.generateKeys = function(start, end) {
     for (let i = 0, k; k = blackKeys[i]; i++) {
 		console.log(k);
 		this.stage.setChildIndex(k.shape, this.stage.getNumChildren()-1);
-		this.stage.update();
 	}
 }
 
@@ -99,7 +97,16 @@ function key(position, isBlack) {
 	this.durationInBeats = 3;
 	this.currentBeat = 0;
 
+
 	this.shape = new createjs.Shape();
+	var s = this.shape;
+
+	//this.shape.addEventListener("mouseover", function() {
+	//   	s.y += 80;
+	//	console.log("mouseover");
+	//   	stage.update();
+	//});
+
 	if (isBlack) {
 		let extraOffset = (keyWidth + keyGap * .5) - blackKeyWidth * .5;
 		this.shape.x = xOffset + (position * (keyWidth + keyGap)) + extraOffset;

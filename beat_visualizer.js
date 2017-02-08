@@ -1,6 +1,7 @@
 
-function BeatVisualizer(stage) {
+function BeatVisualizer(stage, triggerCallback) {
 	this.stage = stage;
+	this.triggerCallback = triggerCallback;
 	this.channels = [];
 }
 
@@ -10,8 +11,8 @@ BeatVisualizer.prototype.tick = function(time) {
 	}
 }
 
-BeatVisualizer.prototype.addChannel = function(x) {
-	let channel = new BeatChannel(x, this.stage);
+BeatVisualizer.prototype.addChannel = function(x, triggerPointY, note) {
+	let channel = new BeatChannel(x, triggerPointY, note, this.triggerCallback, this.stage);
 	this.channels.push(channel);
 
 	this.stage.addChild(channel.shape);
@@ -19,9 +20,11 @@ BeatVisualizer.prototype.addChannel = function(x) {
 	return channel;
 }
 
-function BeatChannel(x, stage) {
+function BeatChannel(x, triggerPointY, note, triggerCallback, stage) {
 	this.stage = stage;
 	this.shape = new createjs.Shape();
+	this.note = note;
+	this.triggerCallback = triggerCallback;
 
 	x = x - beatLineWidth * .5;
 
@@ -50,7 +53,23 @@ BeatChannel.prototype.addSubdividedNodes = function(subdivisions) {
 
 BeatChannel.prototype.tick = function(time) {
     for (let i = 0, n; n = this.nodes[i]; i++) {
-		n.tick(time);
+		//n.tick(time);
+
+		n.shape.y = (time - n.startBeat) * pixelsPerBeat;
+
+		if (n.shape.y / pixelsPerBeat > 1.5  && !n.triggered) {
+			n.triggered = true;
+			this.triggerCallback(this.note);
+			n.shape.graphics.clear().beginFill(BEAT_NODE_TRIGGERED).drawCircle(0, 0, nodeRadius).endFill();
+		}
+
+		if (n.shape.y / pixelsPerBeat > n.endBeat - n.startBeat) {
+			let length = n.endBeat - n.startBeat;
+			n.startBeat += length;
+			n.endBeat += length;
+			n.triggered = false;
+			n.shape.graphics.clear().beginFill(BEAT_NODE).drawCircle(0, 0, nodeRadius).endFill();
+		}
 	}
 }
 
@@ -58,6 +77,7 @@ function BeatNode(x) {
 	this.shape = new createjs.Shape();
 	this.startBeat = 0; 
 	this.endBeat = 3;
+	this.triggered = false;
 
 	this.shape.x = x + 1.5;
 	this.shape.y = nodeRadius;
@@ -66,9 +86,17 @@ function BeatNode(x) {
 
 BeatNode.prototype.tick = function(time) {
 	this.shape.y = (time - this.startBeat) * pixelsPerBeat;
+
+	if (this.shape.y / pixelsPerBeat > 1.5  && !this.triggered) {
+		this.triggered = true;
+		this.shape.graphics.clear().beginFill(BEAT_NODE_TRIGGERED).drawCircle(0, 0, nodeRadius).endFill();
+	}
+
 	if (this.shape.y / pixelsPerBeat > this.endBeat - this.startBeat) {
 		let length = this.endBeat - this.startBeat;
 		this.startBeat += length;
 		this.endBeat += length;
+		this.triggered = false;
+		this.shape.graphics.clear().beginFill(BEAT_NODE).drawCircle(0, 0, nodeRadius).endFill();
 	}
 }
