@@ -1,6 +1,7 @@
 
-function PianoVisualizer(stage) {
+function PianoVisualizer(stage, keyClickCallback) {
 	this.stage = stage;
+	this.keyClickCallback = keyClickCallback;
 
 	this.keyMap = {};
 	this.generateKeys(41, 100);
@@ -71,7 +72,7 @@ PianoVisualizer.prototype.generateKeys = function(start, end) {
 
 		if (isBlack) p--;
 
-		let k = new key(p, isBlack);
+		let k = new key(p, i, isBlack, this.keyClickCallback);
 		this.stage.addChild(k.shape);
 
 		if (isBlack) {
@@ -92,20 +93,24 @@ PianoVisualizer.prototype.generateKeys = function(start, end) {
 	}
 }
 
-function key(position, isBlack) {
+function key(position, note, isBlack, clickCallback) {
 	this.isBlack = isBlack;
 	this.durationInBeats = 3;
 	this.currentBeat = 0;
 
-
 	this.shape = new createjs.Shape();
-	var s = this.shape;
+	
+	let k = this;
+	this.shape.addEventListener("mousedown", function(event) {
+		k.toggle(true);
+		clickCallback(note, true);
+	});
 
-	//this.shape.addEventListener("mouseover", function() {
-	//   	s.y += 80;
-	//	console.log("mouseover");
-	//   	stage.update();
-	//});
+	this.shape.addEventListener("pressup", function(event) {
+		k.toggle(false);
+		//console.log("mouse up");
+		clickCallback(note, false);
+	});
 
 	if (isBlack) {
 		let extraOffset = (keyWidth + keyGap * .5) - blackKeyWidth * .5;

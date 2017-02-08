@@ -6,10 +6,9 @@ var stage;
 
 var currentBeat = 0;
 
-let beatDuration = 60 / .06; // measure in ms, so bpm / multiplier 
+let beatDuration = 1000 * 60 / 60; // last number is bpm
 
 $( document ).ready(function() {
-	 
 	$.getJSON( "data/test.json", function( data ) {
 		keyCodeMap = data["keymap"];
 	});
@@ -119,7 +118,14 @@ function init() {
 		stage.scaleX = stage.scaleY = window.devicePixelRatio;
 	}
 
- 	piano = new PianoVisualizer(stage);
+ 	piano = new PianoVisualizer(stage, function(note, on) {
+		if (on) {
+			MIDI.noteOn(0, note, 50, 0);
+		} else {
+			MIDI.noteOff(0, note, 0);
+		}
+	});
+
 	beatVisualizer = new BeatVisualizer(stage, function(note) {
 		MIDI.noteOn(1, note, 50, 0);
 		MIDI.noteOff(1, note, .1);
