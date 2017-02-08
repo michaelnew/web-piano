@@ -16,8 +16,9 @@ $( document ).ready(function() {
 // simple example to get started;
 MIDI.loadPlugin({
 	soundfontUrl: "./include/soundfont/",
-    instrument: "acoustic_grand_piano", // or the instrument code 1 (aka the default)
-    // instruments: [ "acoustic_grand_piano", "acoustic_guitar_nylon" ], // or multiple instruments
+    //instrument: "banjo", // or the instrument code 1 (aka the default)
+	//instrument: "banjo",
+    instruments: [ "acoustic_grand_piano", "banjo" ], // or multiple instruments
     onsuccess: function() { 
   		// var delay = 0; // play one note every quarter second
 		// var note = 50; // the MIDI note
@@ -30,8 +31,20 @@ MIDI.loadPlugin({
 		// player.loadFile(song, player.start);
 
 		//MIDIPlayerPercentage(player);
+		MIDI.programChange(0, MIDI.GM.byName['acoustic_grand_piano'].number);
+		MIDI.programChange(1, MIDI.GM.byName['banjo'].number);
 	}
 });
+
+//MIDI.loadPlugin({
+//	soundfontUrl: 'js/soundfont/',
+//	instruments: 'clarinet',
+//	onprogress: function(state, progress) {
+//		console.log(state, progress);
+//	},
+//	onsuccess: function(){
+//		MIDI.programChange(0, MIDI.GM.byName['clarinet'].number);
+//	};
 
 
 function keyCodeToNote(kc) {
@@ -116,8 +129,8 @@ function init() {
 
  	piano = new PianoVisualizer(stage);
 	beatVisualizer = new BeatVisualizer(stage, function(note) {
-		//MIDI.noteOn(0, note, 50, 0);
-		//MIDI.noteOff(0, note, .1);
+		MIDI.noteOn(1, note, 50, 0);
+		MIDI.noteOff(1, note, .1);
 	});
 
 	let note1 = 69;
