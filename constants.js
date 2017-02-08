@@ -16,5 +16,21 @@ const pixelsPerBeat = 200;
 
 const nodeRadius = 6;
 
-const beatLineHeight = 300;
+const beatLineHeight = 5;
 const beatLineWidth = 3;
+
+const beatsPerNode = 3;
+
+
+
+// colors
+
+const COLOR_1 = "#F7522B";
+const COLOR_2 = "#F9E000";
+const COLOR_3 = "#F9E000";
+const COLOR_4 = "#B3DA15";
+const COLOR_5 = "#123A4F";
+
+const TRIGGERED_KEY_WHITE = TRIGGERED_KEY_BLACK = COLOR_1;
+const BEAT_LINE = BEAT_NODE = COLOR_2;
+

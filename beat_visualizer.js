@@ -15,9 +15,12 @@ BeatVisualizer.prototype.addChannel = function(x) {
 	this.channels.push(channel);
 
 	this.stage.addChild(channel.shape);
+
+	return channel;
 }
 
 function BeatChannel(x, stage) {
+	this.stage = stage;
 	this.shape = new createjs.Shape();
 
 	x = x - beatLineWidth * .5;
@@ -26,18 +29,23 @@ function BeatChannel(x, stage) {
 
 	this.shape.x = x;
 	this.shape.y = yOffset - beatLineHeight;
-	this.shape.graphics.clear().beginFill("#FF5657").drawRect(0, 0, beatLineWidth, beatLineHeight).endFill();
+	this.shape.graphics.clear().beginFill(BEAT_LINE).drawRect(0, 0, beatLineWidth, beatLineHeight).endFill();
+}
 
-	let node = new BeatNode(x);
-	this.nodes.push(node);
+BeatChannel.prototype.addSubdividedNodes = function(subdivisions) {
+	for (let b = 0; b < beatsPerNode; b++) {
+		for (let i = 0; i < subdivisions; i++) {
 
-	stage.addChild(node.shape);
+			let x = this.shape.x;
 
-	node = new BeatNode(x);
-	node.startBeat = .5;
-	this.nodes.push(node);
+			let node = new BeatNode(x);
+			node.startBeat = i/subdivisions + b;
+			node.endBeat = 3 + i/subdivisions + b;
+			this.nodes.push(node);
 
-	stage.addChild(node.shape);
+			this.stage.addChild(node.shape);
+		}
+	}
 }
 
 BeatChannel.prototype.tick = function(time) {
@@ -53,7 +61,7 @@ function BeatNode(x) {
 
 	this.shape.x = x + 1.5;
 	this.shape.y = nodeRadius;
-	this.shape.graphics.clear().beginFill("#FF5657").drawCircle(0, 0, nodeRadius).endFill();
+	this.shape.graphics.clear().beginFill(BEAT_NODE).drawCircle(0, 0, nodeRadius).endFill();
 }
 
 BeatNode.prototype.tick = function(time) {

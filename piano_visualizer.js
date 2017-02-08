@@ -23,7 +23,6 @@ PianoVisualizer.prototype.topCenterForKey = function(note) {
 	} else {
 		console.log("key not found for " + note);
 	}
-	console.log(p);
 	return p;
 }
 
@@ -118,13 +117,13 @@ key.prototype.toggle = function(on) {
 
 	if (this.isBlack) {
 		if (on) {
-			this.shape.graphics.clear().setStrokeStyle(keyGap).beginStroke("#222").beginFill("#3BBFC0").drawRoundRectComplex(0, 0, blackKeyWidth, blackKeyHeight, 0,0,br,br).endFill().endStroke();
+			this.shape.graphics.clear().setStrokeStyle(keyGap).beginStroke("#222").beginFill(TRIGGERED_KEY_BLACK).drawRoundRectComplex(0, 0, blackKeyWidth, blackKeyHeight, 0,0,br,br).endFill().endStroke();
 		} else {
 			this.shape.graphics.clear().setStrokeStyle(keyGap).beginStroke("#222").beginFill("#4B4D49").drawRoundRectComplex(0, 0, blackKeyWidth, blackKeyHeight, 0,0,br,br).endFill().endStroke();
 		}
 	} else {
 		if (on) {
-			this.shape.graphics.clear().beginFill("#3BBFC0").drawRoundRectComplex(0, 0, keyWidth, keyHeight, 0,0,r,r).endFill();
+			this.shape.graphics.clear().beginFill(TRIGGERED_KEY_WHITE).drawRoundRectComplex(0, 0, keyWidth, keyHeight, 0,0,r,r).endFill();
 		} else {
 			this.shape.graphics.clear().beginFill("#FFF").drawRoundRectComplex(0, 0, keyWidth, keyHeight, 0,0,r,r).endFill();
 		}

@@ -116,8 +116,8 @@ function init() {
  	piano = new PianoVisualizer(stage);
 	beatVisualizer = new BeatVisualizer(stage);
 
-	let p = piano.topCenterForKey(80);
-	beatVisualizer.addChannel(p);
+	beatVisualizer.addChannel(piano.topCenterForKey(80)).addSubdividedNodes(3);
+	beatVisualizer.addChannel(piano.topCenterForKey(70)).addSubdividedNodes(2);
 
 	//time = document.getElementById("time");
 }
