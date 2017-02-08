@@ -20,6 +20,19 @@ BeatVisualizer.prototype.addChannel = function(x, triggerPointY, note) {
 	return channel;
 }
 
+
+BeatVisualizer.prototype.addNodeToChannel = function(note, time) {
+	let matchingChannel;
+    for (let i = 0, c; c = this.channels[i]; i++) {
+		if (c.note == note) {
+			matchingChannel = c;
+		}
+	}
+	if (matchingChannel) {
+		matchingChannel.addNodeAtTime(time);
+	}
+}
+
 function BeatChannel(x, triggerPointY, note, triggerCallback, stage) {
 	this.stage = stage;
 	this.shape = new createjs.Shape();
@@ -44,6 +57,7 @@ BeatChannel.prototype.addSubdividedNodes = function(subdivisions) {
 			let node = new BeatNode(x);
 			node.startBeat = i/subdivisions + b;
 			node.endBeat = 3 + i/subdivisions + b;
+			node.repeat = true;
 			this.nodes.push(node);
 
 			this.stage.addChild(node.shape);
@@ -64,13 +78,31 @@ BeatChannel.prototype.tick = function(time) {
 		}
 
 		if (n.shape.y / pixelsPerBeat > n.endBeat - n.startBeat) {
-			let length = n.endBeat - n.startBeat;
-			n.startBeat += length;
-			n.endBeat += length;
-			n.triggered = false;
-			n.shape.graphics.clear().beginFill(BEAT_NODE).drawCircle(0, 0, nodeRadius).endFill();
+			if (n.repeat) {
+				let length = n.endBeat - n.startBeat;
+				n.startBeat += length;
+				n.endBeat += length;
+				n.triggered = false;
+				n.shape.graphics.clear().beginFill(BEAT_NODE).drawCircle(0, 0, nodeRadius).endFill();
+			} else {
+				this.stage.removeChild(n.shape);
+				this.nodes.splice(i, 1);
+				i -= 1;
+				console.log("destroy note!!!");
+			}
 		}
 	}
+}
+
+BeatChannel.prototype.addNodeAtTime = function(time) {
+
+	let node = new BeatNode(this.shape.x);
+	let t = time - yOffset / pixelsPerBeat;
+	node.startBeat = t;
+	node.endBeat = t + 3;
+	this.nodes.push(node);
+
+	this.stage.addChild(node.shape);
 }
 
 function BeatNode(x) {
@@ -78,25 +110,9 @@ function BeatNode(x) {
 	this.startBeat = 0; 
 	this.endBeat = 3;
 	this.triggered = false;
+	this.repeat = false;
 
 	this.shape.x = x + 1.5;
 	this.shape.y = nodeRadius;
 	this.shape.graphics.clear().beginFill(BEAT_NODE).drawCircle(0, 0, nodeRadius).endFill();
-}
-
-BeatNode.prototype.tick = function(time) {
-	this.shape.y = (time - this.startBeat) * pixelsPerBeat;
-
-	if (this.shape.y / pixelsPerBeat > 1.5  && !this.triggered) {
-		this.triggered = true;
-		this.shape.graphics.clear().beginFill(BEAT_NODE_TRIGGERED).drawCircle(0, 0, nodeRadius).endFill();
-	}
-
-	if (this.shape.y / pixelsPerBeat > this.endBeat - this.startBeat) {
-		let length = this.endBeat - this.startBeat;
-		this.startBeat += length;
-		this.endBeat += length;
-		this.triggered = false;
-		this.shape.graphics.clear().beginFill(BEAT_NODE).drawCircle(0, 0, nodeRadius).endFill();
-	}
 }

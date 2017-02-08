@@ -4,6 +4,8 @@ var piano;
 var beatVisualizer;
 var stage;
 
+var currentBeat = 0;
+
 let beatDuration = 60 / .06; // measure in ms, so bpm / multiplier 
 
 $( document ).ready(function() {
@@ -36,17 +38,6 @@ MIDI.loadPlugin({
 	}
 });
 
-//MIDI.loadPlugin({
-//	soundfontUrl: 'js/soundfont/',
-//	instruments: 'clarinet',
-//	onprogress: function(state, progress) {
-//		console.log(state, progress);
-//	},
-//	onsuccess: function(){
-//		MIDI.programChange(0, MIDI.GM.byName['clarinet'].number);
-//	};
-
-
 function keyCodeToNote(kc) {
 	var translated = keyCodeMap[kc];
 	if (translated == null) {
@@ -76,6 +67,7 @@ document.onkeydown = function (e) {
 		triggeredKeyCodes.push(note);
 
 		piano.toggleKey(note, true);
+		beatVisualizer.addNodeToChannel(note, currentBeat);
 
 		//keyCodeRecorder.push(e.keyCode);
 		//console.log(keyCodeRecorder);
@@ -135,7 +127,7 @@ function init() {
 
 	let note1 = 69;
 	let note2 = 76;
-	beatVisualizer.addChannel(piano.topCenterForKey(note1), yOffset, note1).addSubdividedNodes(4);
+	beatVisualizer.addChannel(piano.topCenterForKey(note1), yOffset, note1).addSubdividedNodes(2);
 	beatVisualizer.addChannel(piano.topCenterForKey(note2), yOffset, note2).addSubdividedNodes(3);
 
 	//time = document.getElementById("time");
@@ -145,6 +137,7 @@ function init() {
 function tick(event) {
 	//let p = (event.time % beatDuration) / beatDuration;
 	let p = event.time / beatDuration;
+	currentBeat = p;
 
 	//piano.tick(p);
 	beatVisualizer.tick(p);
