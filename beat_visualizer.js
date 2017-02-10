@@ -50,6 +50,8 @@ function BeatChannel(x, triggerPointY, note, triggerCallback, stage) {
 	this.triggerCallback = triggerCallback;
 	this.snapPoints = [];
 
+	this.moveCallback;
+
 	x = x - beatLineWidth * .5;
 
 	this.nodes = [];
@@ -60,7 +62,7 @@ function BeatChannel(x, triggerPointY, note, triggerCallback, stage) {
 
 	let c = this;
 	this.shape.on("pressmove", function(evt) {
-		evt.target.x = evt.stageX;
+		evt.target.x = evt.stageX / stage.scaleX - beatLineWidth * .5;
 	});
 
 	this.shape.on("pressup", function(evt) {
@@ -70,21 +72,23 @@ function BeatChannel(x, triggerPointY, note, triggerCallback, stage) {
 
 BeatChannel.prototype.snapToNearestPoint = function() {
 	let nearestDistance  = 10000000;
-	let nearestPoint = 0;
+	let nearestKey;
 
 	let x = this.shape.x + beatLineWidth * .5;
 
-    for (let i = 0, p; p = this.snapPoints[i]; i++) {
-		let diff = x - p;
+    for (let i = 0, ki; ki = this.snapPoints[i]; i++) {
+		let diff = x - ki.topCenterX;
 		diff = Math.abs(diff);
 		if (diff < nearestDistance) {
 			nearestDistance = diff;
-			nearestPoint = p;
+			nearestKey = ki;
 		}
 	}
 
-	console.log(nearestPoint);
-	this.shape.x = nearestPoint - beatLineWidth * .5;
+	console.log(nearestKey);
+	this.moveCallback();
+	this.note = nearestKey.note;
+	this.shape.x = nearestKey.topCenterX - beatLineWidth * .5;
 }
 
 BeatChannel.prototype.getCenterX = function() {

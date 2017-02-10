@@ -28,14 +28,18 @@ PianoVisualizer.prototype.topCenterForKey = function(note) {
 }
 
 PianoVisualizer.prototype.topCenterForAllKeys = function(note) {
-	let positions  = [];
+	let keyInfos = [];
     for (let key in this.keyMap) {
 		let k = this.keyMap[key];
 		let w = k.isBlack ? blackKeyWidth * .5 : keyWidth * .5;
 		let p = k.shape.x + w;
-		positions.push(p);
+
+		let ki = new keyInfo();
+		ki.topCenterX = p
+		ki.note = key;
+		keyInfos.push(ki);
 	}
-	return positions;
+	return keyInfos;
 }
 
 PianoVisualizer.prototype.showLabels = function(left, right) {
@@ -151,3 +155,10 @@ key.prototype.toggle = function(on) {
 		}
 	}
 }
+
+function keyInfo() {
+	this.note;
+	this.topCenterX;
+	this.topCenterY;
+}
+

@@ -1,3 +1,4 @@
+// TODO: globals are gross
 var keyCodeMap;
 var player;
 var piano;
@@ -133,9 +134,17 @@ function init() {
 
 	let note1 = 69;
 	let note2 = 76;
+
 	beatVisualizer.setChannelSnapPoints(piano.topCenterForAllKeys());
-	beatVisualizer.addChannel(piano.topCenterForKey(note1), yOffset, note1).addSubdividedNodes(2);
-	beatVisualizer.addChannel(piano.topCenterForKey(note2), yOffset, note2).addSubdividedNodes(3);
+
+	let channel1 = beatVisualizer.addChannel(piano.topCenterForKey(note1), yOffset, note1);
+	channel1.addSubdividedNodes(2);
+	channel1.moveCallback = function(note) {
+		console.log("moved channel to new note");
+	}
+
+	let channel2 = beatVisualizer.addChannel(piano.topCenterForKey(note2), yOffset, note2);
+	channel2.addSubdividedNodes(3);
 
 	//time = document.getElementById("time");
 }
