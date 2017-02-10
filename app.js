@@ -133,6 +133,7 @@ function init() {
 
 	let note1 = 69;
 	let note2 = 76;
+	beatVisualizer.setChannelSnapPoints(piano.topCenterForAllKeys());
 	beatVisualizer.addChannel(piano.topCenterForKey(note1), yOffset, note1).addSubdividedNodes(2);
 	beatVisualizer.addChannel(piano.topCenterForKey(note2), yOffset, note2).addSubdividedNodes(3);
 

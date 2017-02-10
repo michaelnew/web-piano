@@ -27,6 +27,17 @@ PianoVisualizer.prototype.topCenterForKey = function(note) {
 	return p;
 }
 
+PianoVisualizer.prototype.topCenterForAllKeys = function(note) {
+	let positions  = [];
+    for (let key in this.keyMap) {
+		let k = this.keyMap[key];
+		let w = k.isBlack ? blackKeyWidth * .5 : keyWidth * .5;
+		let p = k.shape.x + w;
+		positions.push(p);
+	}
+	return positions;
+}
+
 PianoVisualizer.prototype.showLabels = function(left, right) {
 	let container = new createjs.Container();
 	const width = 200;
@@ -88,7 +99,6 @@ PianoVisualizer.prototype.generateKeys = function(start, end) {
 	//console.log(this.keyMap);
 
     for (let i = 0, k; k = blackKeys[i]; i++) {
-		console.log(k);
 		this.stage.setChildIndex(k.shape, this.stage.getNumChildren()-1);
 	}
 }
