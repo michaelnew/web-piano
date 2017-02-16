@@ -19,6 +19,8 @@ BeatVisualizer.prototype.addChannel = function(x, triggerPointY, note) {
 
 	this.channels.push(channel);
 	this.stage.addChild(channel.shape);
+	this.stage.addChild(channel.marker);
+	
 
 	return channel;
 }
@@ -66,6 +68,7 @@ function BeatChannel(x, triggerPointY, note, triggerCallback, stage) {
 	this.note = note;
 	this.triggerCallback = triggerCallback;
 	this.snapPoints = [];
+	this.marker = new createjs.Shape();
 
 	let hitArea = new createjs.Shape();
 	let w = nodeRadius * 2 + beatNodeStrikeWidth;
@@ -171,6 +174,7 @@ BeatChannel.prototype.tick = function(time) {
 			}
 		}
 	}
+	this.marker.x = this.shape.x;
 }
 
 BeatChannel.prototype.triggerNearestNodeAtTime = function(time) {
@@ -188,6 +192,9 @@ BeatChannel.prototype.triggerNearestNodeAtTime = function(time) {
 	}
 
 	if (nearestNode) {
+		this.marker.graphics.clear().beginFill(COLOR_6).drawCircle(0, nearestNode.shape.y, nodeRadius).endFill();
+		this.marker.alpha = .5;
+
 		//console.log("distance to node: " + nearestBeat);
 		// positive is too early, negative is too late
 		let tolerance = .015;

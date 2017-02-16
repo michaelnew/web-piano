@@ -44,6 +44,7 @@ const COLOR_2 = "#79E130";
 const COLOR_3 = "#6295C9";
 const COLOR_4 = "#F41026";
 const COLOR_5 = "#6B456F";
+const COLOR_6 = "#FFFFFF";
 
 const TRIGGERED_KEY_WHITE = TRIGGERED_KEY_BLACK = COLOR_1;
 const BEAT_LINE = COLOR_2;
