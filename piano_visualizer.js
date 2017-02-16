@@ -45,7 +45,7 @@ PianoVisualizer.prototype.topCenterForAllKeys = function(note) {
 PianoVisualizer.prototype.showLabels = function(left, right) {
 	let container = new createjs.Container();
 	const width = 200;
-	const y = 560
+	const y = 120;
 	const fontSize = "130px"
 
 	let text = new createjs.Text(left.toString(), "100 " + fontSize + " Roboto", "#D2CFCE");
@@ -63,7 +63,7 @@ PianoVisualizer.prototype.showLabels = function(left, right) {
 	text.x = 130;
 	container.addChild(text);
 
-	container.x = this.getCanvasWidth() * .5 - width *.5;
+	container.x = this.getCanvasWidth() * .1 - width *.5;
 	container.y = y;
 	this.stage.addChild(container);
 }

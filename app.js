@@ -67,7 +67,8 @@ document.onkeydown = function (e) {
 		triggeredKeyCodes.push(note);
 
 		piano.toggleKey(note, true);
-		beatVisualizer.addNodeToChannel(note, currentBeat);
+		//beatVisualizer.addNodeToChannel(note, currentBeat);
+		beatVisualizer.triggerNearestNodeOnChannel(note, currentBeat);
 
 		//keyCodeRecorder.push(e.keyCode);
 		//console.log(keyCodeRecorder);
@@ -99,9 +100,9 @@ function init() {
 	stage = new createjs.Stage("demoCanvas");
 	//stage.enableMouseOver(4); // this is expensive, so it may be better to not use it 
 
-	createjs.Ticker.timingMode = createjs.Ticker.RAF; // syncs to display, does not respect framerate value
+	//createjs.Ticker.timingMode = createjs.Ticker.RAF; // syncs to display, does not respect framerate value
 	//createjs.Ticker.timingMode = createjs.Ticker.RAF_SYNCHED; // synce to display but tries to use framerate
-	//createjs.Ticker.timingMode = createjs.Ticker.TIMEOUT; // does not sync to display, just uses a simple timer
+	createjs.Ticker.timingMode = createjs.Ticker.TIMEOUT; // does not sync to display, just uses a simple timer
 	createjs.Ticker.framerate = 60;
 	createjs.Ticker.addEventListener("tick", tick);
 
