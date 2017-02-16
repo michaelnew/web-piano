@@ -67,6 +67,12 @@ function BeatChannel(x, triggerPointY, note, triggerCallback, stage) {
 	this.triggerCallback = triggerCallback;
 	this.snapPoints = [];
 
+	let hitArea = new createjs.Shape();
+	let w = nodeRadius * 2 + beatNodeStrikeWidth;
+	let h = 500;
+	hitArea.graphics.beginFill("#000").drawRect(- w * .5, - h * .5, w, h);
+	this.shape.hitArea = hitArea;
+
 	this.moveCallback;
 
 	//x = x - beatLineWidth * .5;
