@@ -193,7 +193,8 @@ BeatChannel.prototype.triggerNearestNodeAtTime = function(time) {
 
 	if (nearestNode) {
 		this.marker.graphics.clear().beginFill(COLOR_6).drawCircle(0, nearestNode.shape.y, nodeRadius).endFill();
-		this.marker.alpha = .5;
+		this.marker.alpha = .4;
+		createjs.Tween.get(this.marker, {override: true}).wait(2000).to({alpha: 0},1000);
 
 		//console.log("distance to node: " + nearestBeat);
 		// positive is too early, negative is too late
