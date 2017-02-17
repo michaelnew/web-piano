@@ -83,8 +83,6 @@ function BeatChannel(x, triggerPointY, note, triggerCallback, stage) {
 
 	this.shape.x = x;
 	this.shape.y = + pixelsPerBeat * triggerBeat;
-	//this.shape.graphics.clear().beginFill(BEAT_LINE).drawRect(0, 0, beatLineWidth, beatLineHeight).endFill();
-	//this.shape.graphics.clear().beginFill(BEAT_LINE).drawCircle(0, 0, nodeRadius).endFill();
 	this.shape.graphics.clear().setStrokeStyle(beatNodeStrikeWidth).beginStroke(NODE_STROKE_DULL).drawCircle(0, 0, nodeRadius + beatNodeStrikeWidth).endStroke();
 
 	let c = this;
