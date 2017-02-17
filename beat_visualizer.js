@@ -165,8 +165,8 @@ BeatChannel.prototype.tick = function(time) {
 				let length = n.endBeat - n.startBeat;
 				n.startBeat += length;
 				n.endBeat += length;
+				n.shape.alpha = .3;
 				n.triggered = false;
-				n.alpha = .3;
 				n.shape.graphics.clear().beginFill(n.normalColor).drawCircle(0, 0, nodeRadius).endFill();
 			} else {
 				this.stage.removeChild(n.shape);
@@ -193,19 +193,37 @@ BeatChannel.prototype.triggerNearestNodeAtTime = function(time) {
 	}
 
 	if (nearestNode) {
-		this.marker.graphics.clear().beginFill(COLOR_6).drawCircle(0, nearestNode.shape.y, nodeRadius).endFill();
-		this.marker.alpha = .4;
-		createjs.Tween.get(this.marker, {override: true}).wait(2000).to({alpha: 0},1000);
+		//this.marker.graphics.clear().beginFill(COLOR_6).drawCircle(0, nearestNode.shape.y, nodeRadius).endFill();
+		//this.marker.graphics.clear().setStrokeStyle(beatNodeStrikeWidth).beginStroke(COLOR_6).drawCircle(0, nearestNode.shape.y, 16).endStroke();
+		//this.marker.graphics.clear().beginFill(COLOR_6).drawRect(-nodeRadius - beatNodeStrikeWidth - 12, nearestNode.shape.y, 10, 2).endFill();
 
 		//console.log("distance to node: " + nearestBeat);
 		// positive is too early, negative is too late
-		let tolerance = .015;
+		let tolerance = .02;
 		let color = NODE_TRIGGERED_PERFECT;
 		if (nearestBeat > tolerance) { // to early
 			color = NODE_TRIGGERED_EARLY;
 		} else if (nearestBeat < -tolerance) {
 			color = NODE_TRIGGERED_LATE;
 		}
+
+		let x = -nodeRadius - beatNodeStrikeWidth - 8;
+		let y = nearestNode.shape.y;
+		let sx = 2;
+		let sy = nodeRadius * 2 + beatNodeStrikeWidth - 2;
+		this.marker.graphics.clear().beginFill(color)
+			.drawRect(x, y - sy*.5, sx, sy);
+
+		//this.marker.graphics.clear().beginFill(color)
+		//	.moveTo(x - sx - 2, y - sy*.5)
+		//	.lineTo(x - sx, y - sy*.5)
+		//	.lineTo(x, y)
+		//	.lineTo(x-sx, y+sy*.5)
+		//	.lineTo(x-sx - 2, y+sy*.5)
+		//	.lineTo(x - sx - 2, y-sy*.5);
+		
+		this.marker.alpha = 1.0;
+		createjs.Tween.get(this.marker, {override: true}).wait(2000).to({alpha: 0},1000);
 		
 		this.shape.graphics.clear().setStrokeStyle(beatNodeStrikeWidth).beginStroke(color).drawCircle(0, 0, nodeRadius + beatNodeStrikeWidth).endStroke();
 		nearestNode.shape.graphics.clear().beginFill(color).drawCircle(0, 0, nodeRadius).endFill();
