@@ -39,23 +39,26 @@ const beatNodeStrikeWidth = 2;
 //const COLOR_4 = "#3FFFFD";
 //const COLOR_5 = "#123A4F";
 
+
 const COLOR_1 = "#FAE747";
-const COLOR_2 = "#79E130";
-const COLOR_3 = "#6295C9";
-const COLOR_4 = "#F41026";
+const COLOR_2 = "#6bff8b";
+const COLOR_3 = "#4ad3e4";
+const COLOR_4 = "#ea4634";
 const COLOR_5 = "#6B456F";
 const COLOR_6 = "#FFFFFF";
 
 const TRIGGERED_KEY_WHITE = TRIGGERED_KEY_BLACK = COLOR_1;
 const BEAT_LINE = COLOR_2;
-const BEAT_NODE = COLOR_1;
+const BEAT_NODE = COLOR_2;
 
 const NODE_TRIGGERED_PERFECT = COLOR_2;
 const NODE_TRIGGERED_LATE = COLOR_4;
 const NODE_TRIGGERED_EARLY = COLOR_3;
 
 const NODE_STROKE = COLOR_2;
+const NODE_STROKE_DULL = COLOR_6;
 const BEAT_NODE_TRIGGERED = COLOR_3;
 const BEAT_NODE_USER = COLOR_4;
 const BEAT_NODE_USER_TRIGGERED = COLOR_4;
+
 

@@ -21,7 +21,6 @@ BeatVisualizer.prototype.addChannel = function(x, triggerPointY, note) {
 	this.stage.addChild(channel.shape);
 	this.stage.addChild(channel.marker);
 	
-
 	return channel;
 }
 
@@ -86,7 +85,7 @@ function BeatChannel(x, triggerPointY, note, triggerCallback, stage) {
 	this.shape.y = + pixelsPerBeat * triggerBeat;
 	//this.shape.graphics.clear().beginFill(BEAT_LINE).drawRect(0, 0, beatLineWidth, beatLineHeight).endFill();
 	//this.shape.graphics.clear().beginFill(BEAT_LINE).drawCircle(0, 0, nodeRadius).endFill();
-	this.shape.graphics.clear().setStrokeStyle(beatNodeStrikeWidth).beginStroke(NODE_STROKE).drawCircle(0, 0, nodeRadius + beatNodeStrikeWidth).endStroke();
+	this.shape.graphics.clear().setStrokeStyle(beatNodeStrikeWidth).beginStroke(NODE_STROKE_DULL).drawCircle(0, 0, nodeRadius + beatNodeStrikeWidth).endStroke();
 
 	let c = this;
 	this.shape.on("pressmove", function(evt) {
@@ -135,6 +134,7 @@ BeatChannel.prototype.addSubdividedNodes = function(subdivisions) {
 			node.endBeat = 3 + i/subdivisions + b;
 			node.repeat = true;
 			node.normalColor = BEAT_NODE;
+			node.shape.alpha = .3;
 			//node.triggeredColor = BEAT_NODE_TRIGGERED;
 
 			this.nodes.push(node);
@@ -166,6 +166,7 @@ BeatChannel.prototype.tick = function(time) {
 				n.startBeat += length;
 				n.endBeat += length;
 				n.triggered = false;
+				n.alpha = .3;
 				n.shape.graphics.clear().beginFill(n.normalColor).drawCircle(0, 0, nodeRadius).endFill();
 			} else {
 				this.stage.removeChild(n.shape);
@@ -206,7 +207,9 @@ BeatChannel.prototype.triggerNearestNodeAtTime = function(time) {
 			color = NODE_TRIGGERED_LATE;
 		}
 		
+		this.shape.graphics.clear().setStrokeStyle(beatNodeStrikeWidth).beginStroke(color).drawCircle(0, 0, nodeRadius + beatNodeStrikeWidth).endStroke();
 		nearestNode.shape.graphics.clear().beginFill(color).drawCircle(0, 0, nodeRadius).endFill();
+		nearestNode.shape.alpha = 1;
 	}
 }
 
