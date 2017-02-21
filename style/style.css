@@ -6,6 +6,32 @@ body {
 	text-align: center;
 }
 
+#tempoUp {
+	position:absolute;
+	left:60px;
+	top:100px;
+	background:none; 
+	background-color:transparent;
+	border:none;
+   	outline:none;
+}
+
+#tempoDown {
+	position:absolute;
+	left:60px;
+	top:130px;
+	background:none; 
+	border:none;
+	outline:none;
+	-webkit-transform:rotate(180deg); /* Chrome, Safari, Opera */
+	transform:rotate(180deg); /* Standard syntax */
+}
+
+::selection {
+	background-color:Transparent;
+	color:#000;
+}
+
 #demoCanvas {
 	display: inline-block;
 }

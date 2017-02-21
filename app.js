@@ -5,9 +5,12 @@ var piano;
 var beatVisualizer;
 var stage;
 
+let percentAccumulator = 0;
 var currentBeat = 0;
+var currentNumericBeat = 0;
+var lastBeat = 0;
 
-let beatDuration = 1000 * 60 / 60; // last number is bpm
+let tempo = 60;
 
 $( document ).ready(function() {
 	$.getJSON( "data/test.json", function( data ) {
@@ -37,6 +40,20 @@ MIDI.loadPlugin({
 		MIDI.programChange(1, MIDI.GM.byName['banjo'].number);
 	}
 });
+
+function beatDuration() {
+	return 1000 * 60 / tempo;
+}
+
+function tempoUp() {
+	console.log("tempo: " + tempo);
+	tempo += 1;
+}
+
+function tempoDown() {
+	console.log("tempo: " + tempo);
+	tempo -= 1;
+}
 
 function keyCodeToNote(kc) {
 	var translated = keyCodeMap[kc];
@@ -68,7 +85,7 @@ document.onkeydown = function (e) {
 
 		piano.toggleKey(note, true);
 		//beatVisualizer.addNodeToChannel(note, currentBeat);
-		beatVisualizer.triggerNearestNodeOnChannel(note, currentBeat);
+		beatVisualizer.triggerNearestNodeOnChannel(note, currentNumericBeat + percentAccumulator);
 
 		//keyCodeRecorder.push(e.keyCode);
 		//console.log(keyCodeRecorder);
@@ -152,15 +169,26 @@ function init() {
 
 
 function tick(event) {
-	//let p = (event.time % beatDuration) / beatDuration;
-	let p = event.time / beatDuration;
-	currentBeat = p;
 
-	//piano.tick(p);
-	beatVisualizer.tick(p);
+	let d = beatDuration();
+
+	currentBeat = event.time;
+
+	let dt = currentBeat - lastBeat;
+
+	let percent = dt / d;
+
+	percentAccumulator += percent;
+
+	if (percentAccumulator > 1) {
+		percentAccumulator -= 1;
+		currentNumericBeat += 1;
+	}
+
+	beatVisualizer.tick(currentNumericBeat + percentAccumulator);
 	
-	//var truncated = Math.floor(p * 100) / 100;
-	//time.innerHTML = truncated;
 	stage.update(event);
+
+	lastBeat = currentBeat;
 }
 
