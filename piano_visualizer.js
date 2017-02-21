@@ -6,7 +6,6 @@ function PianoVisualizer(stage, keyClickCallback) {
 	this.keyMap = {};
 	this.generateKeys(41, 100);
 
-	this.showLabels(4, 3);
 	this.stage.update();
 }
 

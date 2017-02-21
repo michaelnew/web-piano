@@ -18,8 +18,7 @@ BeatVisualizer.prototype.addChannel = function(x, triggerPointY, note) {
 	if (this.snapPoints) { channel.snapPoints = this.snapPoints; }
 
 	this.channels.push(channel);
-	this.stage.addChild(channel.shape);
-	this.stage.addChild(channel.marker);
+	this.stage.addChild(channel.container);
 	
 	return channel;
 }
@@ -59,47 +58,58 @@ BeatVisualizer.prototype.triggerNearestNodeOnChannel = function(note, time) {
 	}
 }
 
-
-
 function BeatChannel(x, triggerPointY, note, triggerCallback, stage) {
 	this.stage = stage;
 	this.shape = new createjs.Shape();
 	this.note = note;
 	this.triggerCallback = triggerCallback;
 	this.snapPoints = [];
+
+	this.container = new createjs.Container();
+	this.container.x = x;
+
 	this.marker = new createjs.Shape();
 
 	let hitArea = new createjs.Shape();
 	let w = nodeRadius * 2 + beatNodeStrikeWidth;
 	let h = 500;
-	hitArea.graphics.beginFill("#000").drawRect(- w * .5, - h * .5, w, h);
-	this.shape.hitArea = hitArea;
+	hitArea.graphics.beginFill("#fff").drawRect(- w * .5, 0, w, h);
+	this.container.hitArea = hitArea;
+	this.container.addChild(hitArea);
 
 	this.moveCallback;
 
-	//x = x - beatLineWidth * .5;
 
 	this.nodes = [];
 
-	this.shape.x = x;
+	this.shape.x = 0;
 	this.shape.y = + pixelsPerBeat * triggerBeat;
 	this.shape.graphics.clear().setStrokeStyle(beatNodeStrikeWidth).beginStroke(NODE_STROKE_DULL).drawCircle(0, 0, nodeRadius + beatNodeStrikeWidth).endStroke();
 
+	this.label = new createjs.Text("4", "100 16px Roboto", "#D2CFCE");
+	this.label.x = w; 
+	this.label.y = this.shape.y;
+	this.label.textBaseline = "middle";
+
 	let c = this;
-	this.shape.on("pressmove", function(evt) {
+	this.container.on("pressmove", function(evt) {
 		evt.target.x = evt.stageX / stage.scaleX;
 	});
 
-	this.shape.on("pressup", function(evt) {
+	this.container.on("pressup", function(evt) {
 		c.snapToNearestPoint();
 	});
+
+	this.container.addChild(this.marker);
+	this.container.addChild(this.shape);
+	this.container.addChild(this.label);
 }
 
 BeatChannel.prototype.snapToNearestPoint = function() {
-	let nearestDistance  = 10000000;
+	let nearestDistance = 10000000;
 	let nearestKey;
 
-	let x = this.shape.x;
+	let x = this.container.x;
 
     for (let i = 0, ki; ki = this.snapPoints[i]; i++) {
 		let diff = x - ki.topCenterX;
@@ -111,23 +121,22 @@ BeatChannel.prototype.snapToNearestPoint = function() {
 	}
 
 	console.log(nearestKey);
-	this.moveCallback();
+	if (this.moveCallback) { this.moveCallback(); }
 	this.note = nearestKey.note;
-	this.shape.x = nearestKey.topCenterX;
+	this.container.x = nearestKey.topCenterX;
 }
 
 BeatChannel.prototype.getCenterX = function() {
-	return this.shape.x + beatLineWidth * .5;
+	return this.container.x + beatLineWidth * .5;
 }
 
 
 BeatChannel.prototype.addSubdividedNodes = function(subdivisions) {
+	this.label.text = subdivisions;
 	for (let b = 0; b < beatsPerNode; b++) {
 		for (let i = 0; i < subdivisions; i++) {
 
-			let x = this.shape.x + beatLineWidth * .5;
-
-			let node = new BeatNode(x);
+			let node = new BeatNode(0);
 			node.startBeat = i/subdivisions + b;
 			node.endBeat = 3 + i/subdivisions + b;
 			node.repeat = true;
@@ -136,7 +145,7 @@ BeatChannel.prototype.addSubdividedNodes = function(subdivisions) {
 			//node.triggeredColor = BEAT_NODE_TRIGGERED;
 
 			this.nodes.push(node);
-			this.stage.addChild(node.shape);
+			this.container.addChild(node.shape);
 		}
 	}
 }
@@ -150,7 +159,7 @@ BeatChannel.prototype.tick = function(time) {
 		// y/ppb + sb = time
 		// time = y/ppb + sb
 		n.shape.y = (time - n.startBeat) * pixelsPerBeat;
-		n.shape.x = this.shape.x;
+		//n.shape.x = this.shape.x;
 
 		if (n.shape.y / pixelsPerBeat > triggerBeat  && !n.triggered) {
 			n.triggered = true;
@@ -231,7 +240,7 @@ BeatChannel.prototype.triggerNearestNodeAtTime = function(time) {
 
 BeatChannel.prototype.addNodeAtTime = function(time) {
 
-	let node = new BeatNode(this.shape.x);
+	let node = new BeatNode(0);
 	node.startBeat = time - triggerBeat;
 	node.endBeat = time + triggerBeat;
 	node.normalColor = BEAT_NODE_USER;
@@ -241,14 +250,13 @@ BeatChannel.prototype.addNodeAtTime = function(time) {
 	this.stage.addChild(node.shape);
 }
 
-function BeatNode(x) {
+function BeatNode() {
 	this.shape = new createjs.Shape();
 	this.startBeat = 0; 
 	this.endBeat = 3;
 	this.triggered = false;
 	this.repeat = false;
 
-	this.shape.x = x;
 	this.shape.y = nodeRadius;
 	this.shape.graphics.clear().beginFill(BEAT_NODE).drawCircle(0, 0, nodeRadius).endFill();
 }
