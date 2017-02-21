@@ -16,15 +16,23 @@ body {
    	outline:none;
 }
 
+#tempoUpImage {
+	max-height:12px;
+}
+
 #tempoDown {
 	position:absolute;
 	left:60px;
-	top:130px;
+	top:120px;
 	background:none; 
 	border:none;
 	outline:none;
 	-webkit-transform:rotate(180deg); /* Chrome, Safari, Opera */
 	transform:rotate(180deg); /* Standard syntax */
+}
+
+#tempoDownImage {
+	max-height:12px;
 }
 
 ::selection {
@@ -38,8 +46,8 @@ body {
 
 #tempo {
 	position:absolute;
-	left:120px;
-	top:103px;
+	left:100px;
+	top:92px;
 	color: #ffffff;
 	font-family:"Roboto";
 	font-weight:100;
