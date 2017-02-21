@@ -36,6 +36,12 @@ body {
 	display: inline-block;
 }
 
-#time {
+#tempo {
+	position:absolute;
+	left:120px;
+	top:103px;
 	color: #ffffff;
+	font-family:"Roboto";
+	font-weight:100;
+	font-size:2.5em;
 }

@@ -46,13 +46,13 @@ function beatDuration() {
 }
 
 function tempoUp() {
-	console.log("tempo: " + tempo);
 	tempo += 1;
+	document.getElementById("tempo").innerHTML = tempo;
 }
 
 function tempoDown() {
-	console.log("tempo: " + tempo);
 	tempo -= 1;
+	document.getElementById("tempo").innerHTML = tempo;
 }
 
 function keyCodeToNote(kc) {
@@ -110,12 +110,10 @@ document.onkeyup = function (e) {
 };
 
 
-//var time;
-
 // Easel.JS
 function init() {
 	stage = new createjs.Stage("demoCanvas");
-	//stage.enableMouseOver(4); // this is expensive, so it may be better to not use it 
+	//stage.enableMouseOver(3); // this is expensive, so it may be better to not use it 
 
 	//createjs.Ticker.timingMode = createjs.Ticker.RAF; // syncs to display, does not respect framerate value
 	//createjs.Ticker.timingMode = createjs.Ticker.RAF_SYNCHED; // synce to display but tries to use framerate
@@ -163,8 +161,6 @@ function init() {
 
 	let channel2 = beatVisualizer.addChannel(piano.topCenterForKey(note2), yOffset, note2);
 	channel2.addSubdividedNodes(3);
-
-	//time = document.getElementById("time");
 }
 
 
