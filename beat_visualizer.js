@@ -77,8 +77,6 @@ function BeatChannel(x, triggerPointY, note, triggerCallback, stage) {
 	let w = nodeRadius * 2 + beatNodeStrikeWidth;
 	let h = 500;
 	hitArea.graphics.beginFill("#222").drawRect(- w * .5, 0, w, h);
-	//hitArea.alpha = .01;
-	//this.container.hitArea = hitArea;
 	this.container.addChild(hitArea);
 
 	this.moveCallback;
@@ -125,11 +123,11 @@ BeatChannel.prototype.createTempoButtons = function(y) {
 		.moveTo(x - sx * .5, y + dy)
 		.lineTo(x, y + sy + dy)
 		.lineTo(x + sx * .5, y + dy)
+	this.tempoUp.alpha = .3;
 
 	let hitArea = new createjs.Shape();
 	hitArea.graphics.beginFill("#fff").drawRect(x - 10, y - 10 - dy, 20, 20);
 	this.tempoUp.hitArea = hitArea;
-	//this.container.addChild(hitArea);
 
 	let t = this;
 	this.tempoUp.on("pressup", function(evt) {
@@ -140,11 +138,11 @@ BeatChannel.prototype.createTempoButtons = function(y) {
 		.moveTo(x - sx * .5, y - dy)
 		.lineTo(x, y - sy - dy)
 		.lineTo(x + sx * .5, y - dy)
+	this.tempoDown.alpha = .3;
 
 	let hitArea2 = new createjs.Shape();
 	hitArea2.graphics.beginFill("#ff0").drawRect(x - 10, y - 10 + dy, 20, 20);
 	this.tempoDown.hitArea = hitArea2;
-	//this.container.addChild(hitArea2);
 
 	this.tempoDown.on("pressup", function(evt) {
 		t.resetToSubdivisions(t.label.text - 1);
@@ -188,7 +186,7 @@ BeatChannel.prototype.addSubdividedNodes = function(subdivisions) {
 
 			let node = new BeatNode();
 			node.startBeat = i/subdivisions + b;
-			node.endBeat = 3 + i/subdivisions + b;
+			node.endBeat = beatsPerNode + i/subdivisions + b;
 			node.repeat = true;
 			node.normalColor = BEAT_NODE;
 			node.shape.alpha = .3;
@@ -314,7 +312,7 @@ BeatChannel.prototype.addNodeAtTime = function(time) {
 function BeatNode() {
 	this.shape = new createjs.Shape();
 	this.startBeat = 0; 
-	this.endBeat = 3;
+	this.endBeat = beatsPerNode;
 	this.triggered = false;
 	this.repeat = false;
 

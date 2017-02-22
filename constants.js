@@ -12,14 +12,14 @@ const blackKeyCornerRadius = 6;
 
 const blackNotes = [22,25,27,30,32,34,37,39,42,44,46,49,51,54,56,58,61,63,66,68,70,73,75,78,80,82,85,87,90,92,94,97,99,102,104,106];
 
-const pixelsPerBeat = 200;
+const pixelsPerBeat = 300;
 
 const nodeRadius = 12;
 
 const beatLineHeight = 5;
 const beatLineWidth = 30;
 
-const beatsPerNode = 3;
+const beatsPerNode = 2;
 const triggerBeat = 1.2;
 
 const beatNodeStrikeWidth = 2;
