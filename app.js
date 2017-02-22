@@ -216,6 +216,7 @@ function init() {
  	piano = new PianoVisualizer(stage, function(note, on) {
 		if (on) {
 			MIDI.noteOn(0, note, 50, 0);
+			beatVisualizer.triggerNearestNodeOnChannel(note, currentNumericBeat + percentAccumulator);
 		} else {
 			MIDI.noteOff(0, note, 0);
 		}
