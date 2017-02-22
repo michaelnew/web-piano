@@ -100,6 +100,7 @@ function onMIDIMessage(message) {
 			if (velocity > 0) {
 				MIDI.noteOn(0, note, velocity, 0);
 				piano.toggleKey(note, true);
+				beatVisualizer.triggerNearestNodeOnChannel(note, currentNumericBeat + percentAccumulator);
 			} else {
 				MIDI.noteOff(0, note, 0);
 				piano.toggleKey(note, false);
@@ -117,12 +118,6 @@ function onMIDIMessage(message) {
 	}
 	// logger(keyData, 'key data', data); 
 }
-
-
-
-
-
-
 
 function beatDuration() {
 	return 1000 * 60 / tempo;
