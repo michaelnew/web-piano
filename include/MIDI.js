@@ -1117,7 +1117,7 @@ var stopAudio = function() {
 			if (effects) {
 				var chain = source;
 				for (var key in effects) {
-					chain.connect(effects[key].input);
+					chain.connect(effects[key].gnput);
 					chain = effects[key];
 				}
 			}

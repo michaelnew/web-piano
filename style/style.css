@@ -35,10 +35,6 @@ body {
 	max-height:12px;
 }
 
-::selection {
-	background-color:Transparent;
-	color:#000;
-}
 
 #demoCanvas {
 	display: inline-block;
@@ -47,9 +43,12 @@ body {
 #tempo {
 	position:absolute;
 	left:100px;
-	top:92px;
+	top:85px;
 	color: #ffffff;
+	background-color:#222;
+	border:none;
+	outline:none;
 	font-family:"Roboto";
 	font-weight:100;
-	font-size:2.5em;
+	font-size:3em;
 }

@@ -16,7 +16,15 @@ let tempo = 60;
 $( document ).ready(function() {
 	$.getJSON( "data/test.json", function( data ) {
 		keyCodeMap = data["keymap"];
-		getMIDIInput();
+
+	});
+	getMIDIInput();
+
+	$('#tempo').keypress(function(e){
+		console.log("key pressed in text field: " + e);
+		if(e.which == 13){
+			$(this).blur();    
+		}
 	});
 });
 
@@ -123,14 +131,41 @@ function beatDuration() {
 	return 1000 * 60 / tempo;
 }
 
+function boundedTempo(t) {
+	let r = t;
+	if (t < .1) {
+		r = .1;
+	} else if (t > 1000) {
+		r = 1000;
+	}
+	return r;
+}
+
 function tempoUp() {
-	tempo += 1;
-	document.getElementById("tempo").innerHTML = tempo;
+	let t = boundedTempo(tempo + 1);
+	tempo = t;
+	$("#tempo").val(t);
 }
 
 function tempoDown() {
-	tempo -= 1;
-	document.getElementById("tempo").innerHTML = tempo;
+	let t = boundedTempo(tempo - 1);
+	tempo = t;
+	$("#tempo").val(t);
+}
+
+function tempoFocusLost(e) {
+	let t = $("#tempo");
+	let v = t.val();
+
+	if ($.isNumeric(v)) {
+
+		v = boundedTempo(v);
+
+		if (v != tempo) {
+		   	tempo = v;
+		}
+	}
+	t.val(tempo);
 }
 
 function keyCodeToNote(kc) {
