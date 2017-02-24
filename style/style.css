@@ -6,49 +6,73 @@ body {
 	text-align: center;
 }
 
-#tempoUp {
-	position:absolute;
-	left:60px;
-	top:100px;
-	background:none; 
-	background-color:transparent;
-	border:none;
-   	outline:none;
-}
-
 #tempoUpImage {
 	max-height:12px;
-}
-
-#tempoDown {
-	position:absolute;
-	left:60px;
-	top:120px;
-	background:none; 
-	border:none;
-	outline:none;
-	-webkit-transform:rotate(180deg); /* Chrome, Safari, Opera */
-	transform:rotate(180deg); /* Standard syntax */
 }
 
 #tempoDownImage {
 	max-height:12px;
 }
 
-
 #demoCanvas {
 	display: inline-block;
 }
 
+#tempoUp {
+	position:absolute;
+	left:80px;
+	top:74px;
+	background:none; 
+	background-color:transparent;
+	border:none;
+   	outline:none;
+	background:rgba(0,0,0,0.0);
+}
+
+#tempoDown {
+	position:absolute;
+	left:80px;
+	top:94px;
+	background:none; 
+	border:none;
+	outline:none;
+	background:rgba(0,0,0,0.0);
+	-webkit-transform:rotate(180deg); /* Chrome, Safari, Opera */
+	transform:rotate(180deg); /* Standard syntax */
+}
+
 #tempo {
 	position:absolute;
-	left:100px;
-	top:85px;
+	left:118px;
+	top:65px;
 	color: #ffffff;
-	background-color:#222;
+	background:rgba(0,0,0,0.0);
+	width:110px;
 	border:none;
 	outline:none;
 	font-family:"Roboto";
 	font-weight:100;
 	font-size:3em;
+}
+
+#tempoLabel {
+	position:absolute;
+	left:20px;
+	top:92px;
+	color: #4ad3e4;
+	background-color:#222;
+	font-family:"Roboto";
+	font-weight:100;
+	font-size:1em;
+}
+
+#muteLabel {
+	position:absolute;
+	left:28px;
+	top:142px;
+	color: #4ad3e4;
+	background-color:#222;
+	font-family:"Roboto";
+	font-weight:100;
+	font-size:1em;
 }
