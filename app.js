@@ -141,6 +141,20 @@ function boundedTempo(t) {
 	return r;
 }
 
+function muteToggle() {
+	let b = $("#muteButton");
+	let t = b.html();
+	if (t == "ON") {
+		b.html("OFF");
+		b.css('color', COLOR_6);
+		MIDI.setVolume(0, 127);
+	} else {
+		b.html("ON");
+		b.css('color', COLOR_4);
+		MIDI.setVolume(0, 0);
+	}
+}
+
 function tempoUp() {
 	let t = boundedTempo(tempo + 1);
 	tempo = t;

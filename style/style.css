@@ -7,11 +7,11 @@ body {
 }
 
 #tempoUpImage {
-	max-height:12px;
+	max-height:10px;
 }
 
 #tempoDownImage {
-	max-height:12px;
+	max-height:10px;
 }
 
 #demoCanvas {
@@ -21,7 +21,7 @@ body {
 #tempoUp {
 	position:absolute;
 	left:80px;
-	top:74px;
+	top:82px;
 	background:none; 
 	background-color:transparent;
 	border:none;
@@ -32,7 +32,7 @@ body {
 #tempoDown {
 	position:absolute;
 	left:80px;
-	top:94px;
+	top:95px;
 	background:none; 
 	border:none;
 	outline:none;
@@ -43,8 +43,8 @@ body {
 
 #tempo {
 	position:absolute;
-	left:118px;
-	top:65px;
+	left:110px;
+	top:72px;
 	color: #ffffff;
 	background:rgba(0,0,0,0.0);
 	width:110px;
@@ -52,7 +52,7 @@ body {
 	outline:none;
 	font-family:"Roboto";
 	font-weight:100;
-	font-size:3em;
+	font-size:2.2em;
 }
 
 #tempoLabel {
@@ -69,10 +69,23 @@ body {
 #muteLabel {
 	position:absolute;
 	left:28px;
-	top:142px;
+	top:150px;
 	color: #4ad3e4;
 	background-color:#222;
 	font-family:"Roboto";
 	font-weight:100;
 	font-size:1em;
+}
+
+#muteButton {
+	position:absolute;
+	left:78px;
+	top:132px;
+	border:none;
+	outline:none;
+	color: #fff;
+	background-color:#222;
+	font-family:"Roboto";
+	font-weight:100;
+	font-size:2em;
 }

@@ -26,22 +26,18 @@
 
 	<body onload="init();">
 		<div id="mainDiv">
-			<!-- <div>
-				<span id="time" class="time">00</span>
-			</div> -->
 			<canvas id="demoCanvas" width=1153 height=865></canvas>
 			<br>
 			<br>
-			<!-- <img src="images/web_piano.png" style="margin:0px auto; display:block" /> -->
 
 			<button type="submit" onclick="tempoUp()" id="tempoUp"><img id="tempoUpImage" src="images/tempo_up.png"></button>
 			<button type="submit" onclick="tempoDown()" id="tempoDown"><img id="tempoDownImage" src="images/tempo_up.png"></button>
 
-			<!-- <span id="tempo">60</span> -->
 			<span id="tempoLabel">tempo</span>
 			<input type="text" id="tempo" value="60" onfocusout="tempoFocusLost()"/>
 
 			<span id="muteLabel">mute</span>
+			<button type="submit" onclick="muteToggle()" id="muteButton">OFF</button>
 
 			<script src="https://code.createjs.com/easeljs-0.8.2.min.js"></script>
 			<script src="https://code.createjs.com/tweenjs-0.6.2.min.js"></script>
@@ -57,7 +53,6 @@
 			<script src="include/jasmid/midifile.js"></script>
 			<script src="include/jasmid/replayer.js"></script>
 
-			<!-- <script type="text/javascript" src="include/MIDI.min.js"></script> -->
 			<script type="text/javascript" src="include/MIDI.js"></script>
 
 			<script type="text/javascript" src="constants.js"></script>
@@ -67,9 +62,3 @@
 		</div>
 	</body>
 </html>
-
-
-
-<!-- <input type="file" id="files" name="files[]" multiple />
-<output id="list"></output>
-<input type="submit" value="tempo" id="forwardButton"> -->
