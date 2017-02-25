@@ -33,11 +33,14 @@
 			<button type="submit" onclick="tempoUp()" id="tempoUp"><img id="tempoUpImage" src="images/tempo_up.png"></button>
 			<button type="submit" onclick="tempoDown()" id="tempoDown"><img id="tempoDownImage" src="images/tempo_up.png"></button>
 
-			<span id="tempoLabel">tempo</span>
+			<span id="tempoLabel">tempo:</span>
 			<input type="text" id="tempo" value="60" onfocusout="tempoFocusLost()"/>
 
-			<span id="muteLabel">mute</span>
+			<span id="muteLabel">mute:</span>
 			<button type="submit" onclick="muteToggle()" id="muteButton">OFF</button>
+
+			<span id="beatSoundLabel">beat sound:</span>
+			<button type="submit" onclick="beatSoundToggle()" id="beatSoundButton">TICK</button>
 
 			<script src="https://code.createjs.com/easeljs-0.8.2.min.js"></script>
 			<script src="https://code.createjs.com/tweenjs-0.6.2.min.js"></script>
