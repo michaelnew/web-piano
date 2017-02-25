@@ -24,7 +24,6 @@ const triggerBeat = 1.2;
 
 const beatNodeStrikeWidth = 2;
 
-const TRIGGER_TOLERANCE = .025
 
 // colors
 

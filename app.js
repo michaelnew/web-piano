@@ -6,6 +6,8 @@ var beatVisualizer;
 var stage;
 var keyboard;
 
+let currentBeatSound = 1;
+
 let percentAccumulator = 0;
 var currentBeat = 0;
 var currentNumericBeat = 0;
@@ -32,7 +34,7 @@ MIDI.loadPlugin({
 	soundfontUrl: "./include/soundfont/",
     //instrument: "banjo", // or the instrument code 1 (aka the default)
 	//instrument: "banjo",
-    instruments: [ "acoustic_grand_piano", "banjo" ], // or multiple instruments
+    instruments: [ "acoustic_grand_piano", "banjo", "synth_drum"], // or multiple instruments
     onsuccess: function() { 
   		// var delay = 0; // play one note every quarter second
 		// var note = 50; // the MIDI note
@@ -46,7 +48,8 @@ MIDI.loadPlugin({
 
 		//MIDIPlayerPercentage(player);
 		MIDI.programChange(0, MIDI.GM.byName['acoustic_grand_piano'].number);
-		MIDI.programChange(1, MIDI.GM.byName['banjo'].number);
+		MIDI.programChange(1, MIDI.GM.byName['synth_drum'].number);
+		MIDI.programChange(2, MIDI.GM.byName['banjo'].number);
 	}
 });
 
@@ -141,6 +144,25 @@ function boundedTempo(t) {
 	return r;
 }
 
+function beatSoundToggle() {
+	currentBeatSound += 1;
+	if (currentBeatSound > 3) {
+		currentBeatSound = 0;
+	}
+
+	let l = $("#beatSoundButton");
+	switch(currentBeatSound) {
+		case 0: l.html("piano");
+			break;
+		case 1: l.html("tick");
+			break;
+		case 2: l.html("banjo");
+			break;
+		case 3: l.html("mute");
+			break;
+	}
+}
+
 function muteToggle() {
 	let b = $("#muteButton");
 	let t = b.html();
@@ -207,7 +229,7 @@ document.onkeydown = function (e) {
 	}
 
 	if (!alreadyTriggered) {
-		MIDI.noteOn(0, note, 127, 0);
+		MIDI.noteOn(0, note, 90, 0);
 		triggeredKeyCodes.push(note);
 
 		piano.toggleKey(note, true);
@@ -272,8 +294,11 @@ function init() {
 	});
 
 	beatVisualizer = new BeatVisualizer(stage, function(note) {
-		MIDI.noteOn(1, note, 50, 0);
-		MIDI.noteOff(1, note, .1);
+		// TODO: make this depend on the selected instrument
+		if (currentBeatSound < 3) {
+			MIDI.noteOn(currentBeatSound, note, 50, 0);
+			MIDI.noteOff(currentBeatSound, note, .2);
+		}
 	});
 
 	let note1 = 69;

@@ -265,10 +265,11 @@ BeatChannel.prototype.triggerNearestNodeAtTime = function(time) {
 
 		//console.log("distance to node: " + nearestBeat);
 		// positive is too early, negative is too late
+		let tolerance = .02;
 		let color = NODE_TRIGGERED_PERFECT;
-		if (nearestBeat > TRIGGER_TOLERANCE) { // to early
+		if (nearestBeat > tolerance) { // to early
 			color = NODE_TRIGGERED_EARLY;
-		} else if (nearestBeat < -TRIGGER_TOLERANCE) {
+		} else if (nearestBeat < -tolerance) {
 			color = NODE_TRIGGERED_LATE;
 		}
 
@@ -278,6 +279,14 @@ BeatChannel.prototype.triggerNearestNodeAtTime = function(time) {
 		let sy = nodeRadius * 2 + beatNodeStrikeWidth - 2;
 		this.marker.graphics.clear().beginFill(color)
 			.drawRect(x, y - sy*.5, sx, sy);
+
+		//this.marker.graphics.clear().beginFill(color)
+		//	.moveTo(x - sx - 2, y - sy*.5)
+		//	.lineTo(x - sx, y - sy*.5)
+		//	.lineTo(x, y)
+		//	.lineTo(x-sx, y+sy*.5)
+		//	.lineTo(x-sx - 2, y+sy*.5)
+		//	.lineTo(x - sx - 2, y-sy*.5);
 		
 		this.marker.alpha = 1.0;
 		createjs.Tween.get(this.marker, {override: true}).wait(2000).to({alpha: 0},1000);

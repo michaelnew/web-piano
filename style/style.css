@@ -20,7 +20,7 @@ body {
 
 #tempoUp {
 	position:absolute;
-	left:80px;
+	left:108px;
 	top:82px;
 	background:none; 
 	background-color:transparent;
@@ -31,7 +31,7 @@ body {
 
 #tempoDown {
 	position:absolute;
-	left:80px;
+	left:108px;
 	top:95px;
 	background:none; 
 	border:none;
@@ -43,7 +43,7 @@ body {
 
 #tempo {
 	position:absolute;
-	left:110px;
+	left:134px;
 	top:72px;
 	color: #ffffff;
 	background:rgba(0,0,0,0.0);
@@ -57,7 +57,7 @@ body {
 
 #tempoLabel {
 	position:absolute;
-	left:20px;
+	left:51px;
 	top:92px;
 	color: #4ad3e4;
 	background-color:#222;
@@ -68,7 +68,7 @@ body {
 
 #muteLabel {
 	position:absolute;
-	left:28px;
+	left:60px;
 	top:150px;
 	color: #4ad3e4;
 	background-color:#222;
@@ -79,8 +79,32 @@ body {
 
 #muteButton {
 	position:absolute;
-	left:78px;
-	top:132px;
+	left:106px;
+	top:133px;
+	border:none;
+	outline:none;
+	color: #fff;
+	background-color:#222;
+	font-family:"Roboto";
+	font-weight:100;
+	font-size:2em;
+}
+
+#beatSoundLabel {
+	position:absolute;
+	left:18px;
+	top:208px;
+	color: #4ad3e4;
+	background-color:#222;
+	font-family:"Roboto";
+	font-weight:100;
+	font-size:1em;
+}
+
+#beatSoundButton {
+	position:absolute;
+	left:108px;
+	top:189px;
 	border:none;
 	outline:none;
 	color: #fff;
