@@ -152,13 +152,13 @@ function beatSoundToggle() {
 
 	let l = $("#beatSoundButton");
 	switch(currentBeatSound) {
-		case 0: l.html("piano");
+		case 0: l.html("PIANO");
 			break;
-		case 1: l.html("tick");
+		case 1: l.html("TICK");
 			break;
-		case 2: l.html("banjo");
+		case 2: l.html("BANJO");
 			break;
-		case 3: l.html("mute");
+		case 3: l.html("MUTE");
 			break;
 	}
 }

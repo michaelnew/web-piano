@@ -113,3 +113,23 @@ body {
 	font-weight:100;
 	font-size:2em;
 }
+
+.footerLink{
+	color: #fff;
+	font-family:"Roboto";
+	font-weight:100;
+	font-size:.8em;
+	padding-left: 20px;
+	padding-right: 20px;
+}
+
+#footer{
+	position: fixed;
+    bottom: 10px;
+    width: 100%;
+}
+
+a {
+	color: #aaa;
+	text-decoration:none;
+}
