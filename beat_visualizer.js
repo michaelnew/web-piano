@@ -1,4 +1,6 @@
 
+let currentTime = 0;
+
 function BeatVisualizer(stage, triggerCallback) {
 	this.stage = stage;
 	this.triggerCallback = triggerCallback;
@@ -10,6 +12,7 @@ BeatVisualizer.prototype.tick = function(time) {
     for (let i = 0, c; c = this.channels[i]; i++) {
 		c.tick(time);
 	}
+	currentTime = time;
 }
 
 BeatVisualizer.prototype.addChannel = function(x, triggerPointY, note) {
@@ -180,13 +183,14 @@ BeatChannel.prototype.getCenterX = function() {
 }
 
 BeatChannel.prototype.addSubdividedNodes = function(subdivisions) {
+	let currentBeat = Math.trunc(currentTime) - triggerBeat;
 	this.label.text = subdivisions;
 	for (let b = 0; b < beatsPerNode; b++) {
 		for (let i = 0; i < subdivisions; i++) {
 
 			let node = new BeatNode();
-			node.startBeat = i/subdivisions + b;
-			node.endBeat = beatsPerNode + i/subdivisions + b;
+			node.startBeat = i/subdivisions + b + currentBeat;
+			node.endBeat = beatsPerNode + i/subdivisions + b + currentBeat;
 			node.repeat = true;
 			node.normalColor = BEAT_NODE;
 			node.shape.alpha = .3;

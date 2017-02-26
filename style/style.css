@@ -113,3 +113,47 @@ body {
 	font-weight:100;
 	font-size:2em;
 }
+
+#beatSoundLabel {
+	position:absolute;
+	left:18px;
+	top:208px;
+	color: #4ad3e4;
+	background-color:#222;
+	font-family:"Roboto";
+	font-weight:100;
+	font-size:1em;
+}
+
+#beatSoundButton {
+	position:absolute;
+	left:108px;
+	top:189px;
+	border:none;
+	outline:none;
+	color: #fff;
+	background-color:#222;
+	font-family:"Roboto";
+	font-weight:100;
+	font-size:2em;
+}
+
+.footerLink{
+	color: #fff;
+	font-family:"Roboto";
+	font-weight:100;
+	font-size:.8em;
+	padding-left: 20px;
+	padding-right: 20px;
+}
+
+#footer{
+	position: fixed;
+    bottom: 10px;
+    width: 100%;
+}
+
+a {
+	color: #aaa;
+	text-decoration:none;
+}
