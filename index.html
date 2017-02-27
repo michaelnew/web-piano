@@ -22,9 +22,10 @@
 		<meta name="msapplication-TileColor" content="#ffffff">
 		<meta name="msapplication-TileImage" content="images/ms-icon-144x144.png">
 		<meta name="theme-color" content="#ffffff">
+		<script src="lib/lib.js"></script>
+		<script>SystemJS.import( 'app' );</script>
 	</head>
-
-	<body onload="init();">
+	<body>
 		<div id="mainDiv">
 			<canvas id="demoCanvas" width=1153 height=865></canvas>
 			<br>
@@ -46,27 +47,6 @@
 				<span class="footerLink"><a href="https://www.patreon.com/MichaelNew">Patreon</a></span>
 				<span class="footerLink"><a href="https://www.youtube.com/c/michaelnew">YouTube</a></span>
 			</div>
-
-			<script src="https://code.createjs.com/easeljs-0.8.2.min.js"></script>
-			<script src="https://code.createjs.com/tweenjs-0.6.2.min.js"></script>
-
-			<script src="include/jquery-3.1.1.js" type="text/javascript"></script>
-
-			<script src="include/shim/Base64.js" type="text/javascript"></script>
-			<script src="include/shim/Base64binary.js" type="text/javascript"></script>
-			<script src="include/shim/WebAudioAPI.js" type="text/javascript"></script>
-			<script src="include/shim/WebMIDIAPI.js" type="text/javascript"></script>
-
-			<script src="include/jasmid/stream.js"></script>
-			<script src="include/jasmid/midifile.js"></script>
-			<script src="include/jasmid/replayer.js"></script>
-
-			<script type="text/javascript" src="include/MIDI.js"></script>
-
-			<script type="text/javascript" src="constants.js"></script>
-			<script type="text/javascript" src="app.js"></script>
-			<script type="text/javascript" src="piano_visualizer.js"></script>
-			<script type="text/javascript" src="beat_visualizer.js"></script>
 		</div>
 	</body>
 </html>

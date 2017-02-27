@@ -1,0 +1,38 @@
+{
+  "name": "web-piano",
+  "description": "web piano",
+  "version": "0.0.0",
+  "license": "MIT",
+  "repository": "michaelnew/web-piano",
+  "private": true,
+  "devDependencies": {
+    "browser-sync": "^2.18.8",
+    "core-js": "^2.4.1",
+    "createjs-easeljs": "^0.8.2",
+    "createjs-tweenjs": "^0.6.0",
+    "del": "^2.2.2",
+    "eslint": "^3.16.1",
+    "eslint-plugin-json": "^1.2.0",
+    "ghooks": "^2.0.0",
+    "gulp": "github:gulpjs/gulp#4.0",
+    "gulp-concat": "^2.6.1",
+    "gulp-eslint": "^3.0.1",
+    "gulp-gh-pages": "^0.5.4",
+    "gulp-sourcemaps": "^2.4.1",
+    "gulp-uglify": "^2.0.1",
+    "merge-stream": "^1.0.1",
+    "syncy": "^2.2.2"
+  },
+  "ghooks": {
+    "pre-commit": "npm run lint",
+    "post-merge": "npm install",
+    "post-rewrite": "npm install"
+  },
+  "scripts": {
+    "clean": "gulp clean",
+    "build": "gulp build",
+    "lint": "gulp lint",
+    "deploy": "gulp && gulp deploy",
+    "webserver": "gulp && gulp webserver"
+  }
+}

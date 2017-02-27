@@ -1,2 +1,9 @@
+.*
 *.swp
 *.swo
+*.log
+!.gitignore
+!.gitmodules
+!.eslintrc.json
+node_modules/
+lib/
