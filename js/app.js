@@ -364,4 +364,26 @@ function tick(event) {
 	lastBeat = currentBeat;
 }
 
-$( () => { init(); } );
+$( () => {
+	init();
+
+	$( document )
+	.on( 'click', '#tempoUp', e => {
+		e.preventDefault();
+		tempoUp();
+	} )
+	.on( 'click', '#tempoDown', e => {
+		e.preventDefault();
+		tempoDown();
+	} )
+	.on( 'focusout', '#tempo', e => {
+		tempoFocusLost();
+	} )
+	.on( 'click', '#muteButton', e => {
+		e.preventDefault();
+		muteToggle();
+	} )
+	.on( 'click', '#beatSoundButton', e => {
+		beatSoundToggle();
+	} );
+} );

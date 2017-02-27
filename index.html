@@ -31,17 +31,17 @@
 			<br>
 			<br>
 
-			<button type="submit" onclick="tempoUp()" id="tempoUp"><img id="tempoUpImage" src="images/tempo_up.png"></button>
-			<button type="submit" onclick="tempoDown()" id="tempoDown"><img id="tempoDownImage" src="images/tempo_up.png"></button>
+			<button type="submit" id="tempoUp"><img id="tempoUpImage" src="images/tempo_up.png"></button>
+			<button type="submit" id="tempoDown"><img id="tempoDownImage" src="images/tempo_up.png"></button>
 
 			<span id="tempoLabel">tempo:</span>
-			<input type="text" id="tempo" value="60" onfocusout="tempoFocusLost()"/>
+			<input type="text" id="tempo" value="60"/>
 
 			<span id="muteLabel">mute:</span>
-			<button type="submit" onclick="muteToggle()" id="muteButton">OFF</button>
+			<button type="submit" id="muteButton">OFF</button>
 
 			<span id="beatSoundLabel">beat sound:</span>
-			<button type="submit" onclick="beatSoundToggle()" id="beatSoundButton">TICK</button>
+			<button type="submit" id="beatSoundButton">TICK</button>
 			<div id="footer">
 				<span class="footerLink"><a href="https://github.com/michaelnew/web-piano">GitHub</a></span>
 				<span class="footerLink"><a href="https://www.patreon.com/MichaelNew">Patreon</a></span>
