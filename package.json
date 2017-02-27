@@ -2,6 +2,10 @@
   "name": "web-piano",
   "description": "web piano",
   "version": "0.0.0",
+  "author": {
+    "name": "Michael New",
+    "email": "mikenew12@gmail.com"
+  },
   "license": "MIT",
   "repository": "michaelnew/web-piano",
   "private": true,
