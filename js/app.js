@@ -384,6 +384,7 @@ $( () => {
 		muteToggle();
 	} )
 	.on( 'click', '#beatSoundButton', e => {
+		e.preventDefault();
 		beatSoundToggle();
 	} );
 } );
