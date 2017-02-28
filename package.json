@@ -25,7 +25,8 @@
     "gulp-sourcemaps": "^2.4.1",
     "gulp-uglify": "^2.0.1",
     "merge-stream": "^1.0.1",
-    "syncy": "^2.2.2"
+    "syncy": "^2.2.2",
+    "systemjs": "^0.20.9"
   },
   "ghooks": {
     "pre-commit": "npm run lint",
