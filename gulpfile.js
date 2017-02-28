@@ -4,11 +4,21 @@ const gulp = require( 'gulp' ),
 	del = require( 'del' ),
 	concat = require( 'gulp-concat' ),
 	eslint = require( 'gulp-eslint' ),
+	htmlhint = require( 'gulp-htmlhint' ),
 	uglify = require( 'gulp-uglify' ),
 	sourcemaps = require( 'gulp-sourcemaps' ),
 	ghPages = require( 'gulp-gh-pages' ),
 	merge = require( 'merge-stream' ),
 	browserSync = require( 'browser-sync' ).create();
+
+function watch( paths, types, callback ) {
+	if( typeof types === 'string' ) types = types.trim().split( /\s+/g );
+	const watcher = gulp.watch( paths );
+	for( const type of types ) {
+		watcher.on( type, path => { callback( path, type ); } );
+	}
+	return watcher;
+}
 
 gulp.task( 'clean:lib', () =>
 	del( [ 'lib' ] )
@@ -48,21 +58,56 @@ gulp.task( 'build', gulp.parallel( 'build:lib' ) );
 
 gulp.task( 'lint:eslint', () =>
 	gulp.src( [
-		'*.{js,json}',
-		'js/**/*.{js,json}'
+		'*.{js,json,html}',
+		'.htmlhintrc',
+		'js/**/*.{js,json,html}'
 	], { dot: true } )
 	.pipe( eslint() )
 	.pipe( eslint.format( 'stylish' ) )
 	.pipe( eslint.failAfterError() )
 );
 
-gulp.task( 'lint', gulp.parallel( 'lint:eslint' ) );
+gulp.task( 'lint:htmlhint', () =>
+	gulp.src( [
+		'*.html',
+		'.htmlhintrc'
+	] )
+	.pipe( htmlhint( '.htmlhintrc' ) )
+	.pipe( htmlhint.reporter( 'htmlhint-stylish' ) )
+	.pipe( htmlhint.failReporter( { suppress: true } ) )
+);
+
+gulp.task( 'lint', gulp.parallel( 'lint:eslint', 'lint:htmlhint' ) );
+
+gulp.task( 'watch:lint:eslint', () =>
+	watch( [
+			'*.{js,json,html}',
+			'.htmlhintrc',
+			'js/**/*.{js,json,html}'
+		], 'add change',
+		path =>
+			gulp.src( path, { dot: true } )
+			.pipe( eslint() )
+			.pipe( eslint.format( 'stylish' ) )
+	)
+);
+
+gulp.task( 'watch:lint:htmlhint', () =>
+	watch( [ '*.html' ], 'add change',
+		path =>
+			gulp.src( path, { dot: true } )
+			.pipe( htmlhint( '.htmlhintrc' ) )
+			.pipe( htmlhint.reporter( 'htmlhint-stylish' ) )
+	)
+);
+
+gulp.task( 'watch:lint', gulp.parallel( 'watch:lint:eslint', 'watch:lint:htmlhint' ) );
 
 gulp.task( 'watch:lib', () =>
 	gulp.watch( [ 'system.config.js' ], gulp.parallel( 'build:lib:concat' ) )
 );
 
-gulp.task( 'watch', gulp.parallel( 'watch:lib' ) );
+gulp.task( 'watch', gulp.parallel( 'watch:lint', 'watch:lib' ) );
 
 gulp.task( 'webserver:browser-sync', () => {
 	browserSync.init( {
