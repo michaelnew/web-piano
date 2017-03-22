@@ -227,8 +227,8 @@ document.onkeydown = function (e) {
 	//Blurs the element if anything is focused
 	//this fixes the spacebar bug
 	if ("activeElement" in document) {
-    document.activeElement.blur();
-  }
+    	  	document.activeElement.blur();
+  	}
 	e = e || window.event;
 
 	var note = keyCodeToNote(e.keyCode);
