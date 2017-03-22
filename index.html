@@ -3,6 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 	<head>
 		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		<link href="https://fonts.googleapis.com/css?family=Roboto:100,400" rel="stylesheet">
 		<link rel="stylesheet" href="style/style.css">
 		<title>Polyrhythms</title>
 		<link rel="apple-touch-icon" sizes="57x57" href="images/apple-icon-57x57.png">
@@ -33,13 +34,13 @@
 			<button type="submit" onclick="tempoUp()" id="tempoUp"><img id="tempoUpImage" src="images/tempo_up.png"></button>
 			<button type="submit" onclick="tempoDown()" id="tempoDown"><img id="tempoDownImage" src="images/tempo_up.png"></button>
 
-			<span id="tempoLabel">tempo:</span>
+			<span id="tempoLabel">Tempo:</span>
 			<input type="text" id="tempo" value="60" onfocusout="tempoFocusLost()"/>
 
-			<span id="muteLabel">mute:</span>
+			<span id="muteLabel">Mute:</span>
 			<button type="submit" onclick="muteToggle()" id="muteButton">OFF</button>
 
-			<span id="beatSoundLabel">beat sound:</span>
+			<span id="beatSoundLabel">Beat Sound:</span>
 			<button type="submit" onclick="beatSoundToggle()" id="beatSoundButton">TICK</button>
 			<div id="footer">
 				<span class="footerLink"><a href="https://github.com/michaelnew/web-piano">GitHub</a></span>
