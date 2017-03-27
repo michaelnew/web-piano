@@ -17,7 +17,6 @@
     "del": "^2.2.2",
     "eslint": "^3.16.1",
     "eslint-plugin-json": "^1.2.0",
-    "ghooks": "^2.0.0",
     "gulp": "github:gulpjs/gulp#4.0",
     "gulp-concat": "^2.6.1",
     "gulp-eslint": "^3.0.1",
@@ -26,20 +25,20 @@
     "gulp-sourcemaps": "^2.4.1",
     "gulp-uglify": "^2.0.1",
     "htmlhint-stylish": "^1.0.3",
+    "husky": "^0.13.3",
     "merge-stream": "^1.0.1",
     "syncy": "^2.2.2",
     "systemjs": "^0.20.9"
   },
-  "ghooks": {
-    "pre-commit": "npm run lint",
-    "post-merge": "npm install",
-    "post-rewrite": "npm install"
-  },
   "scripts": {
     "clean": "gulp clean",
+    "prebuild": "gulp prebuild",
     "build": "gulp build",
     "lint": "gulp lint",
     "deploy": "gulp && gulp deploy",
-    "webserver": "gulp && gulp webserver"
+    "webserver": "gulp && gulp webserver",
+    "precommit": "npm run lint",
+    "postmerge": "npm install",
+    "postrewrite": "npm install"
   }
 }
