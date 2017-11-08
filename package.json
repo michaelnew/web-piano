@@ -28,7 +28,7 @@
     "husky": "^0.13.3",
     "merge-stream": "^1.0.1",
     "syncy": "^2.2.2",
-    "systemjs": "^0.20.9"
+    "systemjs": "^0.20.19"
   },
   "scripts": {
     "clean": "gulp clean",
