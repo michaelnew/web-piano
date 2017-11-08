@@ -1,0 +1,17 @@
+{
+	"extends": "eslint:recommended",
+	"ecmaVersion": 6,
+	"plugins": [ "json" ],
+	"parser": "esprima",
+	"env": {
+		"browser": true,
+		"commonjs": true
+	},
+	"rules": {
+		"no-console": "warn",
+		"no-cond-assign": "warn",
+		"no-mixed-spaces-and-tabs": "warn",
+		"no-unused-vars": "warn",
+		"no-var": "warn"
+	}
+}

@@ -1,3 +1,21 @@
+const {
+		Container,
+		Shape,
+		Text
+	} = require( 'easeljs' ), {
+		blackKeyCornerRadius,
+		blackKeyHeight,
+		blackKeyWidth,
+		blackNotes,
+		keyCornerRadius,
+		keyGap,
+		keyHeight,
+		keyWidth,
+		TRIGGERED_KEY_BLACK,
+		TRIGGERED_KEY_WHITE,
+		xOffset,
+		yOffset
+	} = require( './constants' );
 
 function PianoVisualizer(stage, keyClickCallback) {
 	this.stage = stage;
@@ -42,22 +60,22 @@ PianoVisualizer.prototype.topCenterForAllKeys = function(note) {
 }
 
 PianoVisualizer.prototype.showLabels = function(left, right) {
-	let container = new createjs.Container();
+	let container = new Container;
 	const width = 200;
 	const y = 120;
 	const fontSize = "130px"
 
-	let text = new createjs.Text(left.toString(), "100 " + fontSize + " Roboto", "#D2CFCE");
+	let text = new Text(left.toString(), "100 " + fontSize + " Roboto", "#D2CFCE");
 	text.textBaseline = "alphabetic";
 	container.addChild(text);
 
-	text = new createjs.Text(":", "100 " + fontSize + " Roboto", "#D2CFCE");
+	text = new Text(":", "100 " + fontSize + " Roboto", "#D2CFCE");
 	text.textBaseline = "alphabetic";
 	text.x = 90; 
 	text.y = -6;
 	container.addChild(text);
 
-	text = new createjs.Text(right.toString(), "100 " + fontSize + " Roboto", "#D2CFCE");
+	text = new Text(right.toString(), "100 " + fontSize + " Roboto", "#D2CFCE");
 	text.textBaseline = "alphabetic";
 	text.x = 130;
 	container.addChild(text);
@@ -111,7 +129,7 @@ function key(position, note, isBlack, clickCallback) {
 	this.durationInBeats = 3;
 	this.currentBeat = 0;
 
-	this.shape = new createjs.Shape();
+	this.shape = new Shape;
 	
 	let k = this;
 	this.shape.addEventListener("mousedown", function(event) {
@@ -136,7 +154,6 @@ function key(position, note, isBlack, clickCallback) {
 }
 
 key.prototype.toggle = function(on) {
-
 	const r = keyCornerRadius;
 	const br = blackKeyCornerRadius;
 
@@ -161,3 +178,6 @@ function keyInfo() {
 	this.topCenterY;
 }
 
+module.exports = {
+	PianoVisualizer
+};

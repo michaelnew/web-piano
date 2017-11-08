@@ -1,3 +1,27 @@
+require( 'tweenjs' );
+const {
+		Container,
+		Shape,
+		Stage,
+		Text,
+	} = require( 'easeljs' ),
+	{
+		Ticker
+	} = require( 'tweenjs' ),
+	MIDI = require( 'midi' ),
+	$ = require( 'jquery' ),
+	{ PianoVisualizer } = require( './piano_visualizer' ),
+	{ BeatVisualizer } = require( './beat_visualizer' ),
+	{
+		COLOR_4,
+		COLOR_6,
+		yOffset,
+	} = require( './constants' );
+
+require( 'midi-plugin-audiotag' );
+require( 'midi-plugin-webaudio' );
+require( 'midi-plugin-webmidi' );
+
 // TODO: globals are gross
 var keyCodeMap;
 var player;
@@ -72,7 +96,7 @@ function listInputs(inputs) {
 
 // midi functions
 function onMIDISuccess(midiAccess) {
-    midi = midiAccess; // this is our raw MIDI data, inputs, outputs, and sysex status
+    const midi = midiAccess; // this is our raw MIDI data, inputs, outputs, and sysex status
 
     var inputs = midi.inputs.values();
     // loop over all available inputs and listen for any MIDI input
@@ -92,13 +116,12 @@ function onMIDIFailure(e) {
 }
 
 function onMIDIMessage(message) {
-        
-    data = event.data,
-	cmd = data[0] >> 4,
-	channel = data[0] & 0xf,
-	type = data[0] & 0xf0, // channel agnostic message type. Thanks, Phil Burk.
-	note = data[1],
-	velocity = data[2];
+    const data = event.data,
+		cmd = data[0] >> 4,
+		channel = data[0] & 0xf,
+		type = data[0] & 0xf0, // channel agnostic message type. Thanks, Phil Burk.
+		note = data[1],
+		velocity = data[2];
 	// with pressure and tilt off
 	// note off: 128, cmd: 8 
 	// note on: 144, cmd: 9
@@ -261,14 +284,14 @@ document.onkeyup = function (e) {
 
 // Easel.JS
 function init() {
-	stage = new createjs.Stage("demoCanvas");
+	stage = new Stage("demoCanvas");
 	//stage.enableMouseOver(3); // this is expensive, so it may be better to not use it 
 
-	//createjs.Ticker.timingMode = createjs.Ticker.RAF; // syncs to display, does not respect framerate value
-	//createjs.Ticker.timingMode = createjs.Ticker.RAF_SYNCHED; // synce to display but tries to use framerate
-	createjs.Ticker.timingMode = createjs.Ticker.TIMEOUT; // does not sync to display, just uses a simple timer
-	createjs.Ticker.framerate = 60;
-	createjs.Ticker.addEventListener("tick", tick);
+	//Ticker.timingMode = Ticker.RAF; // syncs to display, does not respect framerate value
+	//Ticker.timingMode = Ticker.RAF_SYNCHED; // synce to display but tries to use framerate
+	Ticker.timingMode = Ticker.TIMEOUT; // does not sync to display, just uses a simple timer
+	Ticker.framerate = 60;
+	Ticker.addEventListener("tick", tick);
 
 	if (window.devicePixelRatio) {
 		// grab the width and height from canvas
@@ -341,3 +364,27 @@ function tick(event) {
 	lastBeat = currentBeat;
 }
 
+$( () => {
+	init();
+
+	$( document )
+	.on( 'click', '#tempoUp', e => {
+		e.preventDefault();
+		tempoUp();
+	} )
+	.on( 'click', '#tempoDown', e => {
+		e.preventDefault();
+		tempoDown();
+	} )
+	.on( 'focusout', '#tempo', e => {
+		tempoFocusLost();
+	} )
+	.on( 'click', '#muteButton', e => {
+		e.preventDefault();
+		muteToggle();
+	} )
+	.on( 'click', '#beatSoundButton', e => {
+		e.preventDefault();
+		beatSoundToggle();
+	} );
+} );
