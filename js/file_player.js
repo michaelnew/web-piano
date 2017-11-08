@@ -1,4 +1,4 @@
-
+let player;
 
 var MIDIPlayerPercentage = function(player) {
 	// update the timestamp
@@ -9,7 +9,7 @@ var MIDIPlayerPercentage = function(player) {
 		var seconds = String(n - (minutes * 60) >> 0);
 		if (seconds.length == 1) seconds = "0" + seconds;
 		return minutes + ":" + seconds;
-	};
+	}
 
 	player.setAnimation(function(data, element) {
 		var percent = data.now / data.end;
@@ -73,3 +73,7 @@ function handleFileSelect(evt) {
 
 document.getElementById("forwardButton").onclick = bumpTempo;
 document.getElementById('files').addEventListener('change', handleFileSelect, false);
+
+module.exports = {
+	player
+};

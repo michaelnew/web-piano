@@ -1,3 +1,24 @@
+const {
+		Container,
+		Shape,
+		Text,
+		Tween
+	} = require( 'easeljs' ),
+	{
+		BEAT_NODE_USER,
+		BEAT_NODE,
+		beatLineWidth,
+		beatNodeStrikeWidth,
+		beatsPerNode,
+		COLOR_6,
+		NODE_STROKE_DULL,
+		NODE_TRIGGERED_EARLY,
+		NODE_TRIGGERED_LATE,
+		NODE_TRIGGERED_PERFECT,
+		nodeRadius,
+		pixelsPerBeat,
+		triggerBeat
+	} = require( './constants' );
 
 let currentTime = 0;
 
@@ -63,20 +84,20 @@ BeatVisualizer.prototype.triggerNearestNodeOnChannel = function(note, time) {
 
 function BeatChannel(x, triggerPointY, note, triggerCallback, stage) {
 	this.stage = stage;
-	this.shape = new createjs.Shape();
+	this.shape = new Shape;
 	this.note = note;
 	this.triggerCallback = triggerCallback;
 	this.snapPoints = [];
 
-	this.container = new createjs.Container();
+	this.container = new Container;
 	this.container.x = x;
 	this.container.tickChildren = true;
 	this.container.mouseEnabled = true;
 	this.container.mouseChildren = true;
 
-	this.marker = new createjs.Shape();
+	this.marker = new Shape;
 
-	let hitArea = new createjs.Shape();
+	let hitArea = new Shape;
 	let w = nodeRadius * 2 + beatNodeStrikeWidth;
 	let h = 500;
 	hitArea.graphics.beginFill("#222").drawRect(- w * .5, 0, w, h);
@@ -91,8 +112,8 @@ function BeatChannel(x, triggerPointY, note, triggerCallback, stage) {
 	this.shape.y = + pixelsPerBeat * triggerBeat;
 	this.shape.graphics.clear().setStrokeStyle(beatNodeStrikeWidth).beginStroke(NODE_STROKE_DULL).drawCircle(0, 0, nodeRadius + beatNodeStrikeWidth).endStroke();
 
-	this.tempoUp = new createjs.Shape();
-	this.tempoDown = new createjs.Shape();
+	this.tempoUp = new Shape;
+	this.tempoDown = new Shape;
 	this.createTempoButtons(this.shape.y);
 
 	let c = this;
@@ -128,7 +149,7 @@ BeatChannel.prototype.createTempoButtons = function(y) {
 		.lineTo(x + sx * .5, y + dy)
 	this.tempoUp.alpha = .3;
 
-	let hitArea = new createjs.Shape();
+	let hitArea = new Shape;
 	hitArea.graphics.beginFill("#fff").drawRect(x - 10, y - 10 - dy, 20, 20);
 	this.tempoUp.hitArea = hitArea;
 
@@ -143,7 +164,7 @@ BeatChannel.prototype.createTempoButtons = function(y) {
 		.lineTo(x + sx * .5, y - dy)
 	this.tempoDown.alpha = .3;
 
-	let hitArea2 = new createjs.Shape();
+	let hitArea2 = new Shape;
 	hitArea2.graphics.beginFill("#ff0").drawRect(x - 10, y - 10 + dy, 20, 20);
 	this.tempoDown.hitArea = hitArea2;
 
@@ -151,7 +172,7 @@ BeatChannel.prototype.createTempoButtons = function(y) {
 		t.resetToSubdivisions(t.label.text - 1);
 	});
 
-	this.label = new createjs.Text("4", "100 16px Roboto", "#D2CFCE");
+	this.label = new Text("4", "100 16px Roboto", "#D2CFCE");
 	this.label.x = x - 4.5; 
 	this.label.y = y;
 	this.label.textBaseline = "middle";
@@ -249,7 +270,7 @@ BeatChannel.prototype.tick = function(time) {
 }
 
 BeatChannel.prototype.triggerNearestNodeAtTime = function(time) {
-
+	let nearestNode;
 	let nearestBeat =  100000;
 
     for (let i = 0, n; n = this.nodes[i]; i++) {
@@ -293,7 +314,7 @@ BeatChannel.prototype.triggerNearestNodeAtTime = function(time) {
 		//	.lineTo(x - sx - 2, y-sy*.5);
 		
 		this.marker.alpha = 1.0;
-		createjs.Tween.get(this.marker, {override: true}).wait(2000).to({alpha: 0},1000);
+		Tween.get(this.marker, {override: true}).wait(2000).to({alpha: 0},1000);
 		
 		this.shape.graphics.clear().setStrokeStyle(beatNodeStrikeWidth).beginStroke(color).drawCircle(0, 0, nodeRadius + beatNodeStrikeWidth).endStroke();
 		nearestNode.shape.graphics.clear().beginFill(color).drawCircle(0, 0, nodeRadius).endFill();
@@ -314,7 +335,7 @@ BeatChannel.prototype.addNodeAtTime = function(time) {
 }
 
 function BeatNode() {
-	this.shape = new createjs.Shape();
+	this.shape = new Shape;
 	this.startBeat = 0; 
 	this.endBeat = beatsPerNode;
 	this.triggered = false;
@@ -322,3 +343,9 @@ function BeatNode() {
 
 	this.shape.graphics.clear().beginFill(BEAT_NODE).drawCircle(0, 0, nodeRadius).endFill();
 }
+
+module.exports = {
+	BeatVisualizer,
+	BeatChannel,
+	BeatNode
+};
