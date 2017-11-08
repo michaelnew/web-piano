@@ -40,5 +40,8 @@
     "precommit": "npm run lint",
     "postmerge": "npm install",
     "postrewrite": "npm install"
+  },
+  "dependencies": {
+    "jquery": "^3.2.1"
   }
 }
