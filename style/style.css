@@ -21,8 +21,8 @@ body {
 #tempoUp {
 	position:absolute;
 	left:108px;
-	top:82px;
-	background:none; 
+	top:80px;
+	background:none;
 	background-color:transparent;
 	border:none;
    	outline:none;
@@ -33,7 +33,7 @@ body {
 	position:absolute;
 	left:108px;
 	top:95px;
-	background:none; 
+	background:none;
 	border:none;
 	outline:none;
 	background:rgba(0,0,0,0.0);
@@ -43,8 +43,8 @@ body {
 
 #tempo {
 	position:absolute;
-	left:134px;
-	top:72px;
+	left:141px;
+	top:75px;
 	color: #ffffff;
 	background:rgba(0,0,0,0.0);
 	width:110px;
@@ -62,7 +62,7 @@ body {
 	color: #4ad3e4;
 	background-color:#222;
 	font-family:"Roboto";
-	font-weight:100;
+	font-weight:400;
 	font-size:1em;
 }
 
@@ -73,14 +73,14 @@ body {
 	color: #4ad3e4;
 	background-color:#222;
 	font-family:"Roboto";
-	font-weight:100;
+	font-weight:400;
 	font-size:1em;
 }
 
 #muteButton {
 	position:absolute;
 	left:106px;
-	top:133px;
+	top:135px;
 	border:none;
 	outline:none;
 	color: #fff;
@@ -97,14 +97,14 @@ body {
 	color: #4ad3e4;
 	background-color:#222;
 	font-family:"Roboto";
-	font-weight:100;
+	font-weight:400;
 	font-size:1em;
 }
 
 #beatSoundButton {
 	position:absolute;
 	left:108px;
-	top:189px;
+	top:193px;
 	border:none;
 	outline:none;
 	color: #fff;
@@ -114,29 +114,6 @@ body {
 	font-size:2em;
 }
 
-#beatSoundLabel {
-	position:absolute;
-	left:18px;
-	top:208px;
-	color: #4ad3e4;
-	background-color:#222;
-	font-family:"Roboto";
-	font-weight:100;
-	font-size:1em;
-}
-
-#beatSoundButton {
-	position:absolute;
-	left:108px;
-	top:189px;
-	border:none;
-	outline:none;
-	color: #fff;
-	background-color:#222;
-	font-family:"Roboto";
-	font-weight:100;
-	font-size:2em;
-}
 
 .footerLink{
 	color: #fff;
@@ -152,8 +129,24 @@ body {
     bottom: 10px;
     width: 100%;
 }
-
+button {
+	opacity: .75;
+	transition: opacity 0.2s;
+}
+button:hover,
+button:active {
+	opacity: 1;
+}
 a {
+	font-weight: 400;
 	color: #aaa;
 	text-decoration:none;
+	transition: color 0.2s;
+
+}
+
+a:hover,
+a:active {
+	color: #ccc;
+
 }

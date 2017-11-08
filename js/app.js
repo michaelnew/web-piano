@@ -49,7 +49,7 @@ $( document ).ready(function() {
 	$('#tempo').keypress(function(e){
 		console.log("key pressed in text field: " + e);
 		if(e.which == 13){
-			$(this).blur();    
+			$(this).blur();
 		}
 	});
 });
@@ -59,7 +59,7 @@ MIDI.loadPlugin({
     //instrument: "banjo", // or the instrument code 1 (aka the default)
 	//instrument: "banjo",
     instruments: [ "acoustic_grand_piano", "banjo", "synth_drum"], // or multiple instruments
-    onsuccess: function() { 
+    onsuccess: function() {
   		// var delay = 0; // play one note every quarter second
 		// var note = 50; // the MIDI note
 		// var velocity = 127; // how hard the note hits
@@ -80,7 +80,7 @@ MIDI.loadPlugin({
 function getMIDIInput() {
 	if (navigator.requestMIDIAccess) {
 		navigator.requestMIDIAccess({
-			sysex: false // this defaults to 'false' and we won't be covering sysex in this article. 
+			sysex: false // this defaults to 'false' and we won't be covering sysex in this article.
 		}).then(onMIDISuccess, onMIDIFailure);
 	} else {
 		alert("No MIDI support in your browser.");
@@ -89,8 +89,8 @@ function getMIDIInput() {
 
 function listInputs(inputs) {
 	var input = inputs.value;
-		console.log("Input port : [ type:'" + input.type + "' id: '" + input.id + 
-				"' manufacturer: '" + input.manufacturer + "' name: '" + input.name + 
+		console.log("Input port : [ type:'" + input.type + "' id: '" + input.id +
+				"' manufacturer: '" + input.manufacturer + "' name: '" + input.name +
 				"' version: '" + input.version + "']");
 }
 
@@ -100,7 +100,7 @@ function onMIDISuccess(midiAccess) {
 
     var inputs = midi.inputs.values();
     // loop over all available inputs and listen for any MIDI input
-	
+
     for (var input = inputs.next(); input && !input.done; input = inputs.next()) {
         // each time there is a midi message call the onMIDIMessage function
         input.value.onmidimessage = onMIDIMessage;
@@ -123,14 +123,14 @@ function onMIDIMessage(message) {
 		note = data[1],
 		velocity = data[2];
 	// with pressure and tilt off
-	// note off: 128, cmd: 8 
+	// note off: 128, cmd: 8
 	// note on: 144, cmd: 9
 	// pressure / tilt on
-	// pressure: 176, cmd 11: 
+	// pressure: 176, cmd 11:
 	// bend: 224, cmd: 14
 	// log('MIDI data', data);
 	switch(type){
-		case 144: // noteOn message 
+		case 144: // noteOn message
 			if (velocity > 0) {
 				MIDI.noteOn(0, note, velocity, 0);
 				piano.toggleKey(note, true);
@@ -140,17 +140,16 @@ function onMIDIMessage(message) {
 				piano.toggleKey(note, false);
 			}
 			break;
-		case 128: // noteOff message 
+		case 128: // noteOff message
 			MIDI.noteOff(0, note, 0);
 			piano.toggleKey(note, false);
 			// noteOff(note, velocity);
 			break;
 	}
-	
-	if (channel != 8 && channel != 14) {
+if (channel != 8 && channel != 14) {
 		console.log('data', data, 'cmd', cmd, 'channel', channel);
 	}
-	// logger(keyData, 'key data', data); 
+	// logger(keyData, 'key data', data);
 }
 
 function beatDuration() {
@@ -174,6 +173,7 @@ function beatSoundToggle() {
 	}
 
 	let l = $("#beatSoundButton");
+	l.css('color', COLOR_6);
 	switch(currentBeatSound) {
 		case 0: l.html("PIANO");
 			break;
@@ -181,13 +181,17 @@ function beatSoundToggle() {
 			break;
 		case 2: l.html("BANJO");
 			break;
-		case 3: l.html("MUTE");
+		case 3:
+			l.html("MUTE");
+			//make the 'mute' beat sound be red to match the mute toggle
+			l.css('color', COLOR_4);
 			break;
 	}
 }
 
 function muteToggle() {
 	let b = $("#muteButton");
+
 	let t = b.html();
 	if (t == "ON") {
 		b.html("OFF");
@@ -197,6 +201,7 @@ function muteToggle() {
 		b.html("ON");
 		b.css('color', COLOR_4);
 		MIDI.setVolume(0, 0);
+
 	}
 }
 
@@ -232,6 +237,7 @@ function keyCodeToNote(kc) {
 	if (translated == null) {
 		translated = kc;
 	}
+
 	return translated;
 }
 
@@ -240,8 +246,13 @@ var triggeredKeyCodes = [];
 var keyCodeRecorder = [];
 
 document.onkeydown = function (e) {
+	//Blurs the element if anything is focused
+	//this fixes the spacebar bug
+	if ("activeElement" in document) {
+    	  	document.activeElement.blur();
+  	}
 	e = e || window.event;
-	
+
 	var note = keyCodeToNote(e.keyCode);
 	var alreadyTriggered = false;
 
@@ -266,6 +277,7 @@ document.onkeydown = function (e) {
 
 document.onkeyup = function (e) {
 	e = e || window.event;
+
 	//console.log("keyup fired " + e.keyCode);
 	var note = keyCodeToNote(e.keyCode);
 	MIDI.noteOff(0, note, 0);
@@ -285,7 +297,7 @@ document.onkeyup = function (e) {
 // Easel.JS
 function init() {
 	stage = new Stage("demoCanvas");
-	//stage.enableMouseOver(3); // this is expensive, so it may be better to not use it 
+	//stage.enableMouseOver(3); // this is expensive, so it may be better to not use it
 
 	//Ticker.timingMode = Ticker.RAF; // syncs to display, does not respect framerate value
 	//Ticker.timingMode = Ticker.RAF_SYNCHED; // synce to display but tries to use framerate
@@ -358,7 +370,7 @@ function tick(event) {
 	}
 
 	beatVisualizer.tick(currentNumericBeat + percentAccumulator);
-	
+
 	stage.update(event);
 
 	lastBeat = currentBeat;
