@@ -114,6 +114,57 @@ body {
 	font-size:2em;
 }
 
+#currentStreakLabel {
+	position:absolute;
+	left:18px;
+	top:266px;
+	color: #4ad3e4;
+	background-color:#222;
+	font-family:"Roboto";
+	font-weight:400;
+	font-size:1em;
+}
+
+#currentStreakValue {
+	position:absolute;
+	left:130px;
+	top:251px;
+	border:none;
+	outline:none;
+	color: #fff;
+	background-color:#222;
+	font-family:"Roboto";
+	font-weight:100;
+	font-size:2em;
+	cursor:default;
+}
+
+#highestStreakLabel {
+	position:absolute;
+	left:18px;
+	top:324px;
+	color: #4ad3e4;
+	background-color:#222;
+	font-family:"Roboto";
+	font-weight:400;
+	font-size:1em;
+}
+
+#highestStreakValue {
+	position:absolute;
+	left:130px;
+	top:309px;
+	width:70px;
+	border:none;
+	outline:none;
+	color: #fff;
+	background-color:#222;
+	font-family:"Roboto";
+	font-weight:100;
+	font-size:2em;
+	cursor:pointer;
+}
+
 
 .footerLink{
 	color: #fff;
