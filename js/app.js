@@ -230,11 +230,12 @@ var triggeredKeyCodes = [];
 var keyCodeRecorder = [];
 
 document.onkeydown = function (e) {
-	//Blurs the element if anything is focused
+	//Blurs the element if anything other than tempo box is focused
 	//this fixes the spacebar bug
-	if ("activeElement" in document) {
-    	  	document.activeElement.blur();
-  	}
+	if (document.activeElement.id == "tempo") {return;}
+	else {document.activeElement.blur();}
+
+
 	e = e || window.event;
 
 	var note = keyCodeToNote(e.keyCode);

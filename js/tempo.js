@@ -28,7 +28,7 @@ function getTempo(){
 }
 
 function setTempo(newTempo){
-	tempo_ = boundedTempo(newTempo);
+	tempo_ = parseInt(boundedTempo(newTempo));
 }
 
 
