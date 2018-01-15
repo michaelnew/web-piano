@@ -114,11 +114,25 @@ body {
 	font-size:2em;
 }
 
-#currentStreakLabel {
+.streakContainer {
 	position:absolute;
-	left:18px;
-	top:266px;
-	color: #4ad3e4;
+	top:0%;
+	width:100%;
+}
+
+.streakLabels {
+	position: absolute;
+	margin-left:40px;
+    left: 0;
+    top: 50%;
+    width: 100%;
+    text-align: center;
+    font-size: 18px;
+}
+
+#currentStreakLabel {
+	background:transparent !important;
+	color: #9ebcbf;
 	background-color:#222;
 	font-family:"Roboto";
 	font-weight:400;
@@ -126,43 +140,40 @@ body {
 }
 
 #currentStreakValue {
-	position:absolute;
-	left:130px;
-	top:251px;
+	background:transparent !important;
+	width:45px;
 	border:none;
 	outline:none;
 	color: #fff;
 	background-color:#222;
 	font-family:"Roboto";
 	font-weight:100;
-	font-size:2em;
+	font-size:1.1em;
 	cursor:default;
 }
 
 #highestStreakLabel {
-	position:absolute;
-	left:18px;
-	top:324px;
-	color: #4ad3e4;
+	background:transparent !important;
+	color: #9ebcbf;
 	background-color:#222;
 	font-family:"Roboto";
 	font-weight:400;
 	font-size:1em;
+	visibility: hidden;
 }
 
 #highestStreakValue {
-	position:absolute;
-	left:130px;
-	top:309px;
-	width:70px;
+	background:transparent !important;
+	width:45px;
 	border:none;
 	outline:none;
 	color: #fff;
 	background-color:#222;
 	font-family:"Roboto";
 	font-weight:100;
-	font-size:2em;
+	font-size:1.1em;
 	cursor:pointer;
+	visibility: hidden;
 }
 
 

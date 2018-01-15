@@ -31,6 +31,16 @@
 			<br />
 			<br />
 
+			<div class="streakContainer">
+				<div class="streakLabels" visible="false">
+					<span id="currentStreakLabel">streak</span>
+					<input type="text" id="currentStreakValue" value="0" readonly="readonly"/>
+					&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+					<span id="highestStreakLabel">best</span>
+					<input type="text" id="highestStreakValue" value="0" readonly="readonly" title="Click to reset"/>
+				</div>
+			</div>
+
 			<button type="submit" id="tempoUp"><img id="tempoUpImage" src="images/tempo_up.png" alt="Tempo Up" /></button>
 			<button type="submit" id="tempoDown"><img id="tempoDownImage" src="images/tempo_up.png" alt="Tempo Down" /></button>
 
@@ -42,12 +52,6 @@
 
 			<span id="beatSoundLabel">beat sound:</span>
 			<button type="submit" id="beatSoundButton">TICK</button>
-
-			<span id="currentStreakLabel">current streak:</span>
-			<input type="text" id="currentStreakValue" value="0" readonly="readonly"/>
-			<span id="highestStreakLabel">highest streak:</span>
-			<input type="text" id="highestStreakValue" value="0" readonly="readonly" title="Click to reset"/>
-
 			<div id="footer">
 				<span class="footerLink"><a href="https://github.com/michaelnew/web-piano">GitHub</a></span>
 				<span class="footerLink"><a href="https://www.patreon.com/MichaelNew">Patreon</a></span>
