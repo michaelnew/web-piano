@@ -4,6 +4,7 @@ const {
 		Text,
 		Tween
 	} = require( 'easeljs' ),
+	$ = require( 'jquery' ),
 	{
 		BEAT_NODE_USER,
 		BEAT_NODE,
@@ -18,7 +19,10 @@ const {
 		nodeRadius,
 		pixelsPerBeat,
 		triggerBeat
-	} = require( './constants' );
+	} = require( './constants' ),
+	{
+		beatDuration,
+	} = require( './tempo.js' );
 
 let currentTime = 0;
 
@@ -27,13 +31,22 @@ function BeatVisualizer(stage, triggerCallback) {
 	this.triggerCallback = triggerCallback;
 	this.channels = [];
 	this.snapPoints = [];
+	this.maxStreak = 0;
 }
 
 BeatVisualizer.prototype.tick = function(time) {
+	let currentStreak = Number.MAX_SAFE_INTEGER;
     for (let i = 0, c; c = this.channels[i]; i++) {
 		c.tick(time);
+		currentStreak = Math.min(currentStreak, Math.floor(c.streakCounter / c.subdivisions));
 	}
+	this.maxStreak = Math.max(this.maxStreak, currentStreak);
 	currentTime = time;
+	publishStreakData(currentStreak, this.maxStreak);
+}
+
+function publishStreakData(currentStreak, maxStreak){
+	$("#currentStreakLabel").html("streak: " + currentStreak + "&nbsp;&nbsp;&nbsp;&nbsp;best: " + maxStreak);
 }
 
 BeatVisualizer.prototype.addChannel = function(x, triggerPointY, note) {
@@ -78,8 +91,13 @@ BeatVisualizer.prototype.triggerNearestNodeOnChannel = function(note, time) {
 	let matchingChannel = this.channelForNote(note);
 
 	if (matchingChannel) {
+		matchingChannel.lastPlayedTimestamp = time;
 		matchingChannel.triggerNearestNodeAtTime(time);
 	}
+}
+
+BeatVisualizer.prototype.clearMaxStreak = function() {
+	this.maxStreak = 0;
 }
 
 function BeatChannel(x, triggerPointY, note, triggerCallback, stage) {
@@ -88,6 +106,8 @@ function BeatChannel(x, triggerPointY, note, triggerCallback, stage) {
 	this.note = note;
 	this.triggerCallback = triggerCallback;
 	this.snapPoints = [];
+	this.streakCounter = 0;
+	this.lastPlayedTimestamp = 0;
 
 	this.container = new Container;
 	this.container.x = x;
@@ -205,13 +225,14 @@ BeatChannel.prototype.getCenterX = function() {
 
 BeatChannel.prototype.addSubdividedNodes = function(subdivisions) {
 	let currentBeat = Math.trunc(currentTime) - triggerBeat;
+	this.subdivisions = subdivisions;
 	this.label.text = subdivisions;
 	for (let b = 0; b < beatsPerNode; b++) {
 		for (let i = 0; i < subdivisions; i++) {
 
 			let node = new BeatNode();
 			node.startBeat = i/subdivisions + b + currentBeat;
-			node.endBeat = beatsPerNode + i/subdivisions + b + currentBeat;
+			node.endBeat = beatsPerNode + node.startBeat;
 			node.repeat = true;
 			node.normalColor = BEAT_NODE;
 			node.shape.alpha = .3;
@@ -245,6 +266,7 @@ BeatChannel.prototype.tick = function(time) {
 		n.shape.y = (time - n.startBeat) * pixelsPerBeat;
 		//n.shape.x = this.shape.x;
 
+		// generate the tick sound
 		if (n.shape.y / pixelsPerBeat > triggerBeat  && !n.triggered) {
 			n.triggered = true;
 			this.triggerCallback(this.note);
@@ -267,6 +289,11 @@ BeatChannel.prototype.tick = function(time) {
 		}
 	}
 	this.marker.x = this.shape.x;
+
+	// reset the streak counter if the relevant note wasn't played in time
+	let time_per_subdivision = beatDuration()/this.subdivisions/1000.0;
+	let tolerance = 1.2;
+	if (time > this.lastPlayedTimestamp + time_per_subdivision * tolerance) {this.streakCounter = 0;}
 }
 
 BeatChannel.prototype.triggerNearestNodeAtTime = function(time) {
@@ -291,11 +318,16 @@ BeatChannel.prototype.triggerNearestNodeAtTime = function(time) {
 		//console.log("distance to node: " + nearestBeat);
 		// positive is too early, negative is too late
 		let tolerance = .02;
-		let color = NODE_TRIGGERED_PERFECT;
-		if (nearestBeat > tolerance) { // to early
+		let color = null;
+		if (nearestBeat > tolerance) { // too early
 			color = NODE_TRIGGERED_EARLY;
+			this.streakCounter = 0;
 		} else if (nearestBeat < -tolerance) {
 			color = NODE_TRIGGERED_LATE;
+			this.streakCounter = 0;
+		} else {
+			color = NODE_TRIGGERED_PERFECT;
+			++this.streakCounter;
 		}
 
 		let x = -nodeRadius - beatNodeStrikeWidth - 8;

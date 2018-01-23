@@ -114,6 +114,25 @@ body {
 	font-size:2em;
 }
 
+.streakContainer {
+	position:absolute;
+	top:3px;
+	width:100%;
+}
+
+#currentStreakLabel {
+	background:transparent !important;
+	color: #777;
+	background-color:#222;
+	font-family:"Roboto";
+	font-weight:400;
+	font-size:.9em;
+    text-align: center;
+	position:50%;
+	top:0%;
+	width:100%;
+	cursor:pointer;
+}
 
 .footerLink{
 	color: #fff;

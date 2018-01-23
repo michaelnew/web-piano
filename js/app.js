@@ -16,7 +16,11 @@ const {
 		COLOR_4,
 		COLOR_6,
 		yOffset,
-	} = require( './constants' );
+	} = require( './constants' ),
+	{
+		tempo,
+		beatDuration,
+	} = require( './tempo.js' );
 
 require( 'midi-plugin-audiotag' );
 require( 'midi-plugin-webaudio' );
@@ -37,7 +41,6 @@ var currentBeat = 0;
 var currentNumericBeat = 0;
 var lastBeat = 0;
 
-let tempo = 60;
 
 $( document ).ready(function() {
 	$.getJSON( "data/test.json", function( data ) {
@@ -152,20 +155,6 @@ if (channel != 8 && channel != 14) {
 	// logger(keyData, 'key data', data);
 }
 
-function beatDuration() {
-	return 1000 * 60 / tempo;
-}
-
-function boundedTempo(t) {
-	let r = t;
-	if (t < .1) {
-		r = .1;
-	} else if (t > 1000) {
-		r = 1000;
-	}
-	return r;
-}
-
 function beatSoundToggle() {
 	currentBeatSound += 1;
 	if (currentBeatSound > 3) {
@@ -206,15 +195,13 @@ function muteToggle() {
 }
 
 function tempoUp() {
-	let t = boundedTempo(tempo + 1);
-	tempo = t;
-	$("#tempo").val(t);
+	tempo(tempo()+1)
+	$("#tempo").val(tempo());
 }
 
 function tempoDown() {
-	let t = boundedTempo(tempo - 1);
-	tempo = t;
-	$("#tempo").val(t);
+	tempo(tempo()-1)
+	$("#tempo").val(tempo());
 }
 
 function tempoFocusLost(e) {
@@ -222,14 +209,11 @@ function tempoFocusLost(e) {
 	let v = t.val();
 
 	if ($.isNumeric(v)) {
-
-		v = boundedTempo(v);
-
-		if (v != tempo) {
-		   	tempo = v;
-		}
+		tempo(v);
 	}
-	t.val(tempo);
+
+	// this resets the tempo box in case any non-numeric value was entered
+	t.val(tempo());
 }
 
 function keyCodeToNote(kc) {
@@ -246,11 +230,12 @@ var triggeredKeyCodes = [];
 var keyCodeRecorder = [];
 
 document.onkeydown = function (e) {
-	//Blurs the element if anything is focused
+	//Blurs the element if anything other than tempo box is focused
 	//this fixes the spacebar bug
-	if ("activeElement" in document) {
-    	  	document.activeElement.blur();
-  	}
+	if (document.activeElement.id == "tempo") {return;}
+	else {document.activeElement.blur();}
+
+
 	e = e || window.event;
 
 	var note = keyCodeToNote(e.keyCode);
@@ -376,6 +361,11 @@ function tick(event) {
 	lastBeat = currentBeat;
 }
 
+function clearHighestStreak(e)
+{
+	beatVisualizer.clearMaxStreak();
+}
+
 $( () => {
 	init();
 
@@ -391,6 +381,9 @@ $( () => {
 	.on( 'focusout', '#tempo', e => {
 		tempoFocusLost();
 	} )
+	.on( 'click', '#currentStreakLabel', e => {
+		clearHighestStreak();
+	})
 	.on( 'click', '#muteButton', e => {
 		e.preventDefault();
 		muteToggle();
