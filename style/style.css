@@ -116,66 +116,23 @@ body {
 
 .streakContainer {
 	position:absolute;
-	top:0%;
+	top:3px;
 	width:100%;
-}
-
-.streakLabels {
-	position: absolute;
-	margin-left:40px;
-    left: 0;
-    top: 50%;
-    width: 100%;
-    text-align: center;
-    font-size: 18px;
 }
 
 #currentStreakLabel {
 	background:transparent !important;
-	color: #9ebcbf;
+	color: #777;
 	background-color:#222;
 	font-family:"Roboto";
 	font-weight:400;
-	font-size:1em;
-}
-
-#currentStreakValue {
-	background:transparent !important;
-	width:45px;
-	border:none;
-	outline:none;
-	color: #fff;
-	background-color:#222;
-	font-family:"Roboto";
-	font-weight:100;
-	font-size:1.1em;
-	cursor:default;
-}
-
-#highestStreakLabel {
-	background:transparent !important;
-	color: #9ebcbf;
-	background-color:#222;
-	font-family:"Roboto";
-	font-weight:400;
-	font-size:1em;
-	visibility: hidden;
-}
-
-#highestStreakValue {
-	background:transparent !important;
-	width:45px;
-	border:none;
-	outline:none;
-	color: #fff;
-	background-color:#222;
-	font-family:"Roboto";
-	font-weight:100;
-	font-size:1.1em;
+	font-size:.9em;
+    text-align: center;
+	position:50%;
+	top:0%;
+	width:100%;
 	cursor:pointer;
-	visibility: hidden;
 }
-
 
 .footerLink{
 	color: #fff;

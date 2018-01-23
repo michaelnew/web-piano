@@ -12,8 +12,8 @@
   "devDependencies": {
     "browser-sync": "^2.18.8",
     "core-js": "^2.4.1",
-    "createjs-easeljs": "^0.8.2",
-    "createjs-tweenjs": "^0.6.0",
+    "easeljs": "latest",
+    "tweenjs": "latest",
     "del": "^2.2.2",
     "eslint": "^3.16.1",
     "eslint-plugin-json": "^1.2.0",

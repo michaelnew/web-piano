@@ -46,18 +46,7 @@ BeatVisualizer.prototype.tick = function(time) {
 }
 
 function publishStreakData(currentStreak, maxStreak){
-
-	// The "best" label should become visible once the first streak has ended
-	// The reason for controlling the visibility like this is to limit the clutter in the interface on initial load
-	if (currentStreak == 0 && maxStreak > 0)
-	{
-		$("#highestStreakValue").css("visibility", "visible");
-		$("#highestStreakLabel").css("visibility", "visible");
-	}
-
-	// Then set the values
-	$("#currentStreakValue").val(currentStreak);
-	$("#highestStreakValue").val(maxStreak);
+	$("#currentStreakLabel").html("streak: " + currentStreak + "&nbsp;&nbsp;&nbsp;&nbsp;best: " + maxStreak);
 }
 
 BeatVisualizer.prototype.addChannel = function(x, triggerPointY, note) {

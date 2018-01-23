@@ -381,7 +381,7 @@ $( () => {
 	.on( 'focusout', '#tempo', e => {
 		tempoFocusLost();
 	} )
-	.on( 'click', '#highestStreakValue', e => {
+	.on( 'click', '#currentStreakLabel', e => {
 		clearHighestStreak();
 	})
 	.on( 'click', '#muteButton', e => {
