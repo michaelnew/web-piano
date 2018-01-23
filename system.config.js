@@ -4,11 +4,11 @@ SystemJS.config( {
 		'midi-plugin-audiotag': 'lib/midi/js/midi/plugin.audiotag.js',
 		'midi-plugin-webaudio': 'lib/midi/js/midi/plugin.webaudio.js',
 		'midi-plugin-webmidi': 'lib/midi/js/midi/plugin.webmidi.js',
-		easeljs: 'lib/createjs-easeljs/lib/easeljs-0.8.2.min.js',
+		easeljs: 'https://code.createjs.com/easeljs-0.8.2.min.js',
 		jquery: 'lib/jquery/dist/jquery.min.js',
 		midi: 'lib/midi/build/MIDI.min.js',
 		soundfont: 'include/soundfont',
-		tweenjs: 'lib/createjs-tweenjs/lib/tweenjs-0.6.0.min.js',
+		tweenjs: 'https://code.createjs.com/tweenjs-0.6.2.min.js',
 		app: 'js'
 	},
 	packages: {
