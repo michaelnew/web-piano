@@ -7,7 +7,6 @@ const gulp = require( 'gulp' ),
 	htmlhint = require( 'gulp-htmlhint' ),
 	uglify = require( 'gulp-uglify' ),
 	sourcemaps = require( 'gulp-sourcemaps' ),
-	ghPages = require( 'gulp-gh-pages' ),
 	merge = require( 'merge-stream' ),
 	browserSync = require( 'browser-sync' ).create();
 
@@ -119,13 +118,3 @@ gulp.task( 'webserver:browser-sync', () => {
 gulp.task( 'webserver', gulp.parallel( 'watch', 'webserver:browser-sync' ) );
 
 gulp.task( 'default', gulp.series( 'clean', 'build' ) );
-
-gulp.task( 'deploy:gh-pages', () =>
-	gulp.src( [
-		'*.{html,js,json,xml}',
-		'{data,images,include,js,lib,style}/**/*'
-	] )
-	.pipe( ghPages() )
-);
-
-gulp.task( 'deploy', gulp.parallel( 'deploy:gh-pages' ) );
