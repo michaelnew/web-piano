@@ -23,7 +23,6 @@
     "gulp-sourcemaps": "^2.4.1",
     "gulp-uglify": "^2.0.1",
     "htmlhint-stylish": "^1.0.3",
-    "husky": "^0.13.3",
     "merge-stream": "^1.0.1",
     "syncy": "^2.2.2",
     "systemjs": "^0.20.19"
@@ -34,10 +33,7 @@
     "build": "gulp build",
     "lint": "gulp lint",
     "deploy": "gulp && gulp deploy",
-    "webserver": "gulp && gulp webserver",
-    "precommit": "npm run lint",
-    "postmerge": "npm install",
-    "postrewrite": "npm install"
+    "webserver": "gulp && gulp webserver"
   },
   "dependencies": {
     "jquery": "^3.2.1"
