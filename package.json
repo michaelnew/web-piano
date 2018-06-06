@@ -10,16 +10,16 @@
   "repository": "michaelnew/web-piano",
   "private": true,
   "devDependencies": {
-    "browser-sync": "^2.18.8",
-    "core-js": "^2.4.1",
+    "browser-sync": "^2.24.4",
+    "core-js": "^2.5.7",
     "del": "^2.2.2",
     "eslint": "^3.16.1",
     "eslint-plugin-json": "^1.2.0",
-    "gulp": "github:gulpjs/gulp#4.0",
+    "gulp": "github:gulpjs/gulp",
     "gulp-concat": "^2.6.1",
     "gulp-eslint": "^3.0.1",
     "gulp-htmlhint": "^0.3.1",
-    "gulp-sourcemaps": "^2.4.1",
+    "gulp-sourcemaps": "^2.6.4",
     "gulp-uglify": "^2.0.1",
     "htmlhint-stylish": "^1.0.3",
     "merge-stream": "^1.0.1",
@@ -35,6 +35,6 @@
     "webserver": "gulp && gulp webserver"
   },
   "dependencies": {
-    "jquery": "^3.2.1"
+    "jquery": "^3.3.1"
   }
 }
